@@ -1,6 +1,23 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
+import Link from 'next/link';
+import { FaHome, FaUsers, FaBookmark } from 'react-icons/fa';
+import { NextPage } from 'next';
+import { useRouter } from 'next/router';
 
-const Sidebar: React.FC = () => {
+const sideBarData = [
+  { id: 'side1', name: 'My Box', path: '/file', icon: <FaHome /> },
+  { id: 'side2', name: 'Share Box', path: '/share', icon: <FaUsers /> },
+  {
+    id: 'side3',
+    name: 'Favorites',
+    path: '/favorites',
+    icon: <FaBookmark />,
+  },
+];
+
+const Sidebar: NextPage = () => {
+  const router = useRouter();
+
   return (
     <aside className="z-20 flex-shrink-0 hidden w-64 overflow-y-auto bg-white md:block">
       <div className="py-4 text-gray-500 ">
@@ -8,23 +25,38 @@ const Sidebar: React.FC = () => {
           OU
         </a>
         <ul className="mt-6">
-          <li className="relative px-6 py-3">
-            <a className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 ">
-              <svg
-                className="w-5 h-5"
-                aria-hidden="true"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-              </svg>
-              <span className="ml-4">My Box</span>
-            </a>
-          </li>
+          {sideBarData.map((side: any) => (
+            <li key={side.id} className="relative px-6 py-3">
+              {side.path === router.pathname ? (
+                <span className="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"></span>
+              ) : (
+                ''
+              )}
+
+              <a className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 ">
+                <svg
+                  className="w-6 h-6"
+                  aria-hidden="true"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  viewBox="-1 2.5 15 9"
+                  stroke="currentColor"
+                >
+                  {side.icon}
+                </svg>
+                <Link href={side.path} passHref>
+                  <span
+                    className="ml-4"
+                    // onClick={() => sideClickHandler('myBox')}
+                  >
+                    {side.name}
+                  </span>
+                </Link>
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
     </aside>

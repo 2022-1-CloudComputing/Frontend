@@ -14,11 +14,46 @@ const FilePage: React.FC = () => {
 
   const fileInput = useRef<any>();
 
-  // const fetchFile = (filename: string) => {
-  //   axios.post('http://localhost:8000/api/File/', {
-  //     name: filename,
-  //   });
-  // };
+  const postFile = async (file: any) => {
+    await axios.post('http://localhost:8000/files/', {
+      title: file.name,
+      file: 'media/upload_file/2022/05/01/1ed12f1f3f2f22d',
+    });
+  };
+
+  const deleteFile = async (fileName: any) => {
+    await axios.delete('http://localhost:8000/files/', {
+      data: {
+        title: fileName,
+      },
+    });
+  };
+
+  const bookmarkClickHandler = (fileName: string) => {
+    fileList.filter((list: any) => {
+      if (list.name == fileName) list.bookmark = !list.bookmark;
+    });
+    const tempFileList = fileList;
+    console.log(tempFileList);
+    setFileList(tempFileList);
+    console.log(fileList);
+  };
+
+  useEffect(() => {
+    async function getFile() {
+      const res = await axios.get('http://localhost:8000/files/');
+      for (let i: number = 0; i < res.data.length; i++) {
+        const getFileBox = {
+          name: res.data[i].title,
+          uploadDate: res.data[i].created_at.slice(0, 10),
+          fileSize: 1234123,
+          bookmark: false,
+        };
+        setFileList((filelist) => [...filelist, getFileBox]);
+      }
+    }
+    getFile();
+  }, []);
 
   const fileSizeCheck = (tempSize: number) => {
     if (tempSize >= 1000000) {
@@ -36,6 +71,7 @@ const FilePage: React.FC = () => {
 
   const handleChangeFile = (e: any) => {
     e.preventDefault();
+    console.log(e.target.files);
     for (let i: number = 0; i < e.target.files.length; i++) {
       if (e.target.files[i]) {
         const today = new Date();
@@ -48,8 +84,10 @@ const FilePage: React.FC = () => {
           name: e.target.files[i].name,
           uploadDate: now,
           fileSize: fileSize,
+          bookmark: false,
         };
         setFileList((filelist) => [...filelist, fileBox]);
+        postFile(fileBox);
       }
     }
   };
@@ -63,7 +101,12 @@ const FilePage: React.FC = () => {
             <UploadButton onclick={clickHandler}>업로드</UploadButton>
             <FileInput onChange={handleChangeFile} fileRef={fileInput} />
           </MainContent>
-          <FileListTable fileList={fileList} />
+          <FileListTable
+            fileList={fileList}
+            setFileList={setFileList}
+            deleteFile={deleteFile}
+            bookmarkClickHandler={bookmarkClickHandler}
+          />
         </RightContainer>
       </RightPage>
     </TotalPage>
