@@ -1,23 +1,19 @@
-import logo from './logo.svg';
 import './App.css';
+import FilePage from './components/pages/FilePage';
+import { Route, Routes } from 'react-router-dom';
+import HomePage from './components/pages/HomePage';
+import FavoritesPage from './components/pages/FavoritesPage';
+import SharePage from './components/pages/SharePage';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/file" element={<FilePage />} />
+        <Route path="/share" element={<SharePage />} />
+        <Route path="/favorites" element={<FavoritesPage />} />
+      </Routes>
     </div>
   );
 }
