@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import Sidebar from '../Layout/Sidebar';
 import TotalPage from '../Layout/TotalPage';
@@ -98,7 +98,7 @@ const FilePage = () => {
       <RightPage>
         <RightContainer>
           <MainContent>
-            <UploadButton onclick={clickHandler}>업로드</UploadButton>
+            <UploadButton onclick={clickHandler}>+</UploadButton>
             <FileInput onChange={handleChangeFile} fileRef={fileInput} />
           </MainContent>
           <FileListTable

@@ -4,7 +4,7 @@ const Header = () => {
   return (
     <nav className="z-10 py-4 bg-white shadow-md dark:bg-gray-800">
       <div className="flex justify-center flex-1 lg:mr-32">
-        <div className="relative w-full max-w-xl mr-6 focus-within:text-purple-500">
+        <div className="relative w-full max-w-xl mr-6 icon-color">
           <div className="absolute inset-y-0 flex items-center pl-3">
             <svg
               className="w-4 h-4"

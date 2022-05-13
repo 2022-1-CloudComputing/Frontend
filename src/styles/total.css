@@ -5,15 +5,8 @@
 .form-input {
   -webkit-appearance: none;
   -moz-appearance: none;
-  /* appearance: none; */
-  /* background-color: #fff; */
-  /* border-color: #e2e8f0; */
-  /* border-width: 1px; */
-  /* border-radius: 0.25rem; */
   margin-left: 5px;
   padding: 0.5rem;
-  /* font-size: 1rem; */
-  /* line-height: 1.5; */
 }
 .form-input::-moz-placeholder {
   color: #9e9e9e;
@@ -51,4 +44,56 @@
 
 .container {
   width: 100%;
+}
+
+.title-center {
+  align-items: center;
+  margin-left: 40%;
+}
+
+.title-size {
+  font-size: 1.5rem;
+}
+
+.upload-btn {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  z-index: 10000;
+}
+.upload-button {
+  background: linear-gradient(to bottom, #b4e6ed 5%, #7fa5f0 100%);
+  background-color: #b4e6ed;
+  border-radius: 42px;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: Arial;
+  font-size: 23px;
+  font-weight: bold;
+  padding: 10px 31px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #2f6627;
+}
+.upload-button:hover {
+  background: linear-gradient(to bottom, #7fa5f0 5%, #b4e6ed 100%);
+  background-color: #7fa5f0;
+}
+
+.side-selected {
+  background-color: rgba(62, 178, 255, 0.89);
+}
+
+.btn-color {
+  color: rgba(62, 178, 255, 0.89);
+}
+
+.bookmark-color {
+  color: rgba(62, 178, 255, 0.89);
+}
+
+.icon-color:focus-within {
+  color: rgba(62, 178, 255, 0.89);
 }

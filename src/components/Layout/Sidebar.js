@@ -20,19 +20,22 @@ const Sidebar = () => {
   return (
     <aside className="z-20 flex-shrink-0 hidden w-64 overflow-y-auto bg-white md:block">
       <div className="py-4 text-gray-500 ">
-        <a className="ml-6 text-lg font-bold text-gray-800 " href="#">
-          OU
-        </a>
+        <a className="title-size font-bold text-gray-800 title-center">OU</a>
         <ul className="mt-6">
           {sideBarData.map((side) => (
             <li key={side.id} className="relative px-6 py-3">
               {side.path === router.pathname ? (
-                <span className="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"></span>
+                <span className="absolute inset-y-0 left-0 w-1 side-selected rounded-tr-lg rounded-br-lg"></span>
               ) : (
                 ''
               )}
 
-              <a className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 ">
+              <div
+                className={
+                  'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 ' +
+                  (side.path === router.pathname ? 'text-gray-800' : '')
+                }
+              >
                 <svg
                   className="w-6 h-6"
                   aria-hidden="true"
@@ -53,7 +56,7 @@ const Sidebar = () => {
                     {side.name}
                   </span>
                 </Link>
-              </a>
+              </div>
             </li>
           ))}
         </ul>

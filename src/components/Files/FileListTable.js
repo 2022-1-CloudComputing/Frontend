@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { FaBookmark, FaRegBookmark, FaTrash } from 'react-icons/fa';
 
 const FileListTable = (props) => {
@@ -26,7 +26,7 @@ const FileListTable = (props) => {
             <td className="px-4 py-3">
               <div className="flex items-center text-sm">
                 <div
-                  className="relatevie hidden w-8 mr-3 rounded-full md:block"
+                  className="relatevie hidden w-8 mr-3 rounded-full md:block bookmark-color"
                   onClick={() => props.bookmarkClickHandler(list.name)}
                 >
                   <span>
@@ -48,7 +48,7 @@ const FileListTable = (props) => {
             <td className="px-4 py-3">
               <button
                 onClick={() => deleteClickHandler(list.name)}
-                className="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
+                className="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 btn-color rounded-lg focus:outline-none focus:shadow-outline-gray"
               >
                 <FaTrash />
               </button>
