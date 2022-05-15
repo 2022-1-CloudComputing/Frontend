@@ -30,10 +30,10 @@ const FilePage = () => {
   };
 
   const bookmarkClickHandler = (fileName) => {
-    fileList.filter((list) => {
+    const tempFileList = [...fileList];
+    tempFileList.map((list) => {
       if (list.name === fileName) list.bookmark = !list.bookmark;
     });
-    const tempFileList = fileList;
     console.log(tempFileList);
     setFileList(tempFileList);
     console.log(fileList);

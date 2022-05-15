@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
+import React, { useRef, useState } from 'react';
+
 import Sidebar from '../Layout/Sidebar';
 import TotalPage from '../Layout/TotalPage';
 import RightPage from '../Layout/RightPage';
