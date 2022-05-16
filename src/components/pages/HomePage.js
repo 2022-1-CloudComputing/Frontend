@@ -18,16 +18,18 @@ const HomePage = () => {
 
   return (
     <div>
-      <h1> HomePage</h1>
-      {/* <button onClick={clickHandler}>증가하기</button>
-      
+      {
+        <h1> HomePage</h1>
+        /*<button onClick={clickHandler}>증가하기</button>
+
       {fileList.map((file) => (
         <div>
           <h1>{file.name}</h1>
           <h2>{file.created_at}</h2>
         </div>
       ))}
-      <div></div> */}
+      <div></div> */
+      }
     </div>
   );
 };

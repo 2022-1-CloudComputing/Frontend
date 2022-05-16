@@ -100,13 +100,14 @@ const FilePage = () => {
           <MainContent>
             <UploadButton onclick={clickHandler}>+</UploadButton>
             <FileInput onChange={handleChangeFile} fileRef={fileInput} />
+            Share Page
           </MainContent>
-          <FileListTable
+          {/* <FileListTable
             fileList={fileList}
             setFileList={setFileList}
             deleteFile={deleteFile}
             bookmarkClickHandler={bookmarkClickHandler}
-          />
+          /> */}
         </RightContainer>
       </RightPage>
     </TotalPage>

@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fileActions } from '../../store';
 import axios from 'axios';
 import Sidebar from '../Layout/Sidebar';
 import TotalPage from '../Layout/TotalPage';
@@ -10,7 +12,9 @@ import FileInput from '../Files/FileInput';
 import FileListTable from '../Files/FileListTable';
 
 const FilePage = () => {
-  const [fileList, setFileList] = useState([]);
+  const dispatch = useDispatch();
+
+  const fileList2 = useSelector((state) => state.file.file);
 
   const fileInput = useRef();
 
@@ -29,16 +33,6 @@ const FilePage = () => {
     });
   };
 
-  const bookmarkClickHandler = (fileName) => {
-    const tempFileList = [...fileList];
-    tempFileList.map((list) => {
-      if (list.name === fileName) list.bookmark = !list.bookmark;
-    });
-    console.log(tempFileList);
-    setFileList(tempFileList);
-    console.log(fileList);
-  };
-
   useEffect(() => {
     async function getFile() {
       const res = await axios.get('http://localhost:8000/files/');
@@ -49,7 +43,7 @@ const FilePage = () => {
           fileSize: 1234123,
           bookmark: false,
         };
-        setFileList((filelist) => [...filelist, getFileBox]);
+        dispatch(fileActions.addFile(getFileBox));
       }
     }
     getFile();
@@ -86,7 +80,7 @@ const FilePage = () => {
           fileSize: fileSize,
           bookmark: false,
         };
-        setFileList((filelist) => [...filelist, fileBox]);
+        dispatch(fileActions.addFile(fileBox));
         postFile(fileBox);
       }
     }
@@ -101,12 +95,7 @@ const FilePage = () => {
             <UploadButton onclick={clickHandler}>+</UploadButton>
             <FileInput onChange={handleChangeFile} fileRef={fileInput} />
           </MainContent>
-          <FileListTable
-            fileList={fileList}
-            setFileList={setFileList}
-            deleteFile={deleteFile}
-            bookmarkClickHandler={bookmarkClickHandler}
-          />
+          <FileListTable deleteFile={deleteFile} />
         </RightContainer>
       </RightPage>
     </TotalPage>

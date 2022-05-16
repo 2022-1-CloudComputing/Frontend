@@ -1,13 +1,20 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fileActions } from '../../store';
 import { FaBookmark, FaRegBookmark, FaTrash } from 'react-icons/fa';
 
 const FileListTable = (props) => {
-  // const [propsFileList, setPropsFileList] = useState(props.fileList);
+  const fileList2 = useSelector((state) => state.file.file);
+  const dispatch = useDispatch();
 
   const deleteClickHandler = (fileName) => {
     props.deleteFile(fileName);
 
-    props.setFileList(props.fileList.filter((list) => list.name !== fileName));
+    dispatch(fileActions.deleteFile(fileName));
+  };
+
+  const bookmarkClickHandler = (fileName) => {
+    dispatch(fileActions.bookmarkFile(fileName));
   };
 
   return (
@@ -21,13 +28,13 @@ const FileListTable = (props) => {
         </tr>
       </thead>
       <tbody className="bg-white divide-y ">
-        {props.fileList.map((list) => (
+        {fileList2.map((list) => (
           <tr className="text-gray-700 " key={Math.random()}>
             <td className="px-4 py-3">
               <div className="flex items-center text-sm">
                 <div
                   className="relatevie hidden w-8 mr-3 rounded-full md:block bookmark-color"
-                  onClick={() => props.bookmarkClickHandler(list.name)}
+                  onClick={() => bookmarkClickHandler(list.name)}
                 >
                   <span>
                     {list.bookmark === true ? (

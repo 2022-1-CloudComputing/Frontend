@@ -1,12 +1,7 @@
 import { createSlice, configureStore } from '@reduxjs/toolkit';
 
 const initialFileState = {
-  file: [
-    {
-      name: '동트는 로맨스',
-      created_at: '2022-05-10T15:40:36.961502+09:00',
-    },
-  ],
+  file: [],
 };
 
 const fileSlice = createSlice({
@@ -15,6 +10,16 @@ const fileSlice = createSlice({
   reducers: {
     addFile(state, action) {
       state.file = [...state.file, action.payload];
+    },
+    deleteFile(state, action) {
+      state.file = state.file.filter((list) => list.name !== action.payload);
+    },
+    bookmarkFile(state, action) {
+      const tempList = [...state.file];
+      tempList.filter((list) => {
+        if (list.name === action.payload) list.bookmark = !list.bookmark;
+      });
+      state.file = tempList;
     },
   },
 });
