@@ -1,7 +1,14 @@
-import React from 'react';
-import { FaWrench, FaRegUserCircle } from 'react-icons/fa';
+import React, { useState } from "react";
+import { FaWrench, FaRegUserCircle } from "react-icons/fa";
+import UserMenu from "./UserMenu";
 
 const Header = () => {
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+
+  const userIconClickHandler = () => {
+    setShowProfileMenu(true);
+  };
+
   return (
     <nav className="z-10 py-4 bg-white shadow-md ">
       <div className="container flex items-center justify-between h-full px-6 mx-auto">
@@ -31,7 +38,15 @@ const Header = () => {
         </div>
         <ul className="flex items-center flex-shrink-0 space-x-6">
           <li className="flex">
-            <FaRegUserCircle />
+            <button
+              onClick={userIconClickHandler}
+              className={showProfileMenu ? "btn-color" : ""}
+            >
+              <FaRegUserCircle />
+            </button>
+            {showProfileMenu && (
+              <UserMenu setShowProfileMenu={setShowProfileMenu} />
+            )}
           </li>
           <li className="flex">
             <FaWrench />
