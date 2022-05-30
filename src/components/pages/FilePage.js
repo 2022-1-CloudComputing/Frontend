@@ -1,61 +1,61 @@
-import React, { useEffect, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { fileActions } from '../../store';
-import axios from 'axios';
-import Sidebar from '../Layout/Sidebar';
-import TotalPage from '../Layout/TotalPage';
-import RightPage from '../Layout/RightPage';
-import UploadButton from '../Files/UploadButton';
-import RightContainer from '../Layout/RightContainer';
-import MainContent from '../Layout/MainContent';
-import FileInput from '../Files/FileInput';
-import FileListTable from '../Files/FileListTable';
+import React, { useEffect, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fileActions } from "../../store";
+import axios from "axios";
+import Sidebar from "../Layout/Sidebar";
+import TotalPage from "../Layout/TotalPage";
+import RightPage from "../Layout/RightPage";
+import UploadButton from "../Files/UploadButton";
+import RightContainer from "../Layout/RightContainer";
+import MainContent from "../Layout/MainContent";
+import FileInput from "../Files/FileInput";
+import FileListTable from "../Files/FileListTable";
 
 const FilePage = () => {
   const dispatch = useDispatch();
 
-  const fileList2 = useSelector((state) => state.file.file);
+  // const fileList2 = useSelector((state) => state.file.file);
 
   const fileInput = useRef();
 
-  const postFile = async (file) => {
-    await axios.post('http://localhost:8000/files/', {
-      title: file.name,
-      file: 'media/upload_file/2022/05/01/1ed12f1f3f2f22d',
-    });
+  const postFile = async (files) => {
+    await axios.post("http://localhost:8000/user/2/file", files);
   };
 
-  const deleteFile = async (fileName) => {
-    await axios.delete('http://localhost:8000/files/', {
+  const deleteFile = async (fileId) => {
+    await axios.delete(`http://localhost:8000/user/2/file/${fileId}`, {
       data: {
-        title: fileName,
+        fileId: fileId,
       },
     });
   };
 
   useEffect(() => {
     async function getFile() {
-      const res = await axios.get('http://localhost:8000/files/');
-      for (let i = 0; i < res.data.length; i++) {
+      const res = await axios.get("http://localhost:8000/user/2");
+      const tempFileList = res.data.file_list;
+      tempFileList.map((list) => {
         const getFileBox = {
-          name: res.data[i].title,
-          uploadDate: res.data[i].created_at.slice(0, 10),
-          fileSize: 1234123,
-          bookmark: false,
+          fileId: list.fileId,
+          title: list.title,
+          user: list.user,
+          created_at: list.created_at.substr(0, 10),
         };
+        console.log(getFileBox);
         dispatch(fileActions.addFile(getFileBox));
-      }
+      });
     }
     getFile();
+    console.log("useEffect Hook");
   }, []);
 
   const fileSizeCheck = (tempSize) => {
     if (tempSize >= 1000000) {
-      return String(Math.round(tempSize / 100000) / 10) + 'MB';
+      return String(Math.round(tempSize / 100000) / 10) + "MB";
     } else if (tempSize >= 1000000000) {
-      return String(Math.round(tempSize / 100000000) / 10) + 'GB';
+      return String(Math.round(tempSize / 100000000) / 10) + "GB";
     } else {
-      return String(Math.round(tempSize / 1000)) + 'KB';
+      return String(Math.round(tempSize / 1000)) + "KB";
     }
   };
 
@@ -65,21 +65,18 @@ const FilePage = () => {
 
   const handleChangeFile = (e) => {
     e.preventDefault();
-    console.log(e.target.files);
-    for (let i = 0; i < e.target.files.length; i++) {
-      if (e.target.files[i]) {
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = today.getMonth() + 1;
-        const date = today.getDate();
-        const now = year + '-' + month + '-' + date;
-        const fileSize = fileSizeCheck(e.target.files[i].size);
+
+    const postFileBox = e.target.files;
+    for (let i = 0; i < postFileBox.length; i++) {
+      if (postFileBox[i]) {
+        console.log(postFileBox[i]);
         const fileBox = {
-          name: e.target.files[i].name,
-          uploadDate: now,
-          fileSize: fileSize,
-          bookmark: false,
+          file: postFileBox[i].name,
+          title: postFileBox[i].name,
+          file_path: `"C:/User/${postFileBox[i].name}"`,
+          user: 2,
         };
+        console.log(fileBox);
         dispatch(fileActions.addFile(fileBox));
         postFile(fileBox);
       }

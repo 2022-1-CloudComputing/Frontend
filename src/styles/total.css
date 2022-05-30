@@ -297,13 +297,12 @@
   justify-content: center;
 }
 
-input[type="text"],
-input[type="password"] {
+.login-input-container input {
   height: 25px;
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-input[type="submit"] {
+.login-button-container input {
   margin-top: 10px;
   cursor: pointer;
   font-size: 15px;
@@ -313,7 +312,7 @@ input[type="submit"] {
   padding: 10px 20px;
 }
 
-input[type="submit"]:hover {
+.login-button-container input:hover {
   background: #6cf0c2;
 }
 
