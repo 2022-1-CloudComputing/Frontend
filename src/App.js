@@ -18,7 +18,7 @@ function App() {
         <Route path="/favorites" element={<FavoritesPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-      </Routes>
+      </Routes> 
     </div>
   );
 }
