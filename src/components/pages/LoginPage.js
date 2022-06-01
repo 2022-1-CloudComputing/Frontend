@@ -42,7 +42,7 @@ const LoginPage = () => {
       sessionStorage.setItem("SessionToken", res.data.Credentials.SessionToken)
       sessionStorage.setItem("SecretKey", res.data.Credentials.SecretKey)
 
-      document.location.href = '/share'
+      document.location.href = '/file'
     });
   }
 

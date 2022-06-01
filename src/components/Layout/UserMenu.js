@@ -10,6 +10,11 @@ const UserMenu = (props) => {
     console.log(outSection.current);
   };
 
+  const logoutHandler = (e) => {
+    console.log("Log Out!");
+    window.sessionStorage.clear();
+  };
+
   return (
     <div
       className="modal-background"
@@ -31,8 +36,8 @@ const UserMenu = (props) => {
             </div>
           </Link>
         </li>
-        <li>
-          <Link to="#">
+        <li onClick={logoutHandler}>
+          <Link to="/">
             <div className="modal-menu-style">
               <span>Log Out</span>
             </div>
