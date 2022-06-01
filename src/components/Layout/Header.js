@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaWrench, FaRegUserCircle } from "react-icons/fa";
+import UserMenu from "./UserMenu";
 
 const Header = () => {
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+
+  const userIconClickHandler = () => {
+    setShowProfileMenu(true);
+  };
+
   return (
     <nav className="z-10 py-4 bg-white shadow-md ">
       <div className="container flex items-center justify-between h-full px-6 mx-auto">
@@ -22,7 +29,7 @@ const Header = () => {
               </svg>
             </div>
             <input
-              className="w-full pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100  rounded-md  focus:placeholder-gray-500 focus:bg-white  focus:outline-none  form-input"
+              className="w-full pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md  focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
               type="text"
               placeholder="Search for files"
               aria-label="Search"
@@ -31,7 +38,15 @@ const Header = () => {
         </div>
         <ul className="flex items-center flex-shrink-0 space-x-6">
           <li className="flex">
-            <FaRegUserCircle />
+            <button
+              onClick={userIconClickHandler}
+              className={showProfileMenu ? "btn-color" : ""}
+            >
+              <FaRegUserCircle />
+            </button>
+            {showProfileMenu && (
+              <UserMenu setShowProfileMenu={setShowProfileMenu} />
+            )}
           </li>
           <li className="flex">
             <FaWrench />

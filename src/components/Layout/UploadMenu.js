@@ -1,7 +1,8 @@
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 
-const UserMenu = (props) => {
+const UploadMenu = (props) => {
+  console.log("UploadMenu On");
   const outSection = useRef();
 
   const outClickHandler = (e) => {
@@ -14,25 +15,16 @@ const UserMenu = (props) => {
       ref={outSection}
       onClick={outClickHandler}
     >
-      <ul className="modal-div-style">
+      <ul className="upload-modal-div-style">
         <li>
-          <Link to="/userProfile">
-            <div className="modal-menu-style">
-              <span>Profile</span>
-            </div>
-          </Link>
+          <div className="modal-menu-style" onClick={props.uploadBtn}>
+            <span>Upload</span>
+          </div>
         </li>
         <li>
           <Link to="/group">
             <div className="modal-menu-style">
-              <span>Group</span>
-            </div>
-          </Link>
-        </li>
-        <li>
-          <Link to="#">
-            <div className="modal-menu-style">
-              <span>Log Out</span>
+              <span>Create Folder</span>
             </div>
           </Link>
         </li>
@@ -41,4 +33,4 @@ const UserMenu = (props) => {
   );
 };
 
-export default UserMenu;
+export default UploadMenu;
