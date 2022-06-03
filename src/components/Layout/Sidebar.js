@@ -1,15 +1,22 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaHome, FaUsers, FaBookmark } from 'react-icons/fa';
-import { useLocation } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import { FaHome, FaUsers, FaBookmark } from "react-icons/fa";
+import { useLocation } from "react-router-dom";
+
+const userId = window.sessionStorage.getItem("Id");
 
 const sideBarData = [
-  { id: 'side1', name: 'My Box', path: '/file', icon: <FaHome /> },
-  { id: 'side2', name: 'Share Box', path: '/share', icon: <FaUsers /> },
+  { id: "side1", name: "My Box", path: `/${userId}/file`, icon: <FaHome /> },
   {
-    id: 'side3',
-    name: 'Favorites',
-    path: '/favorites',
+    id: "side2",
+    name: "Share Box",
+    path: `/${userId}/share`,
+    icon: <FaUsers />,
+  },
+  {
+    id: "side3",
+    name: "Favorites",
+    path: `/${userId}/favorites`,
     icon: <FaBookmark />,
   },
 ];
@@ -27,13 +34,13 @@ const Sidebar = () => {
               {side.path === router.pathname ? (
                 <span className="absolute inset-y-0 left-0 w-1 side-selected rounded-tr-lg rounded-br-lg"></span>
               ) : (
-                ''
+                ""
               )}
 
               <div
                 className={
-                  'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 ' +
-                  (side.path === router.pathname ? 'text-gray-800' : '')
+                  "inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 " +
+                  (side.path === router.pathname ? "text-gray-800" : "")
                 }
               >
                 <svg

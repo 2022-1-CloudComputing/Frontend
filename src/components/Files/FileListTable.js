@@ -7,9 +7,9 @@ const FileListTable = (props) => {
   const fileList = useSelector((state) => state.file.file);
   const dispatch = useDispatch();
 
-  const deleteClickHandler = (fileId) => {
-    props.deleteFile(fileId);
-    dispatch(fileActions.deleteFile(fileId));
+  const deleteClickHandler = (files) => {
+    props.deleteFile(files);
+    dispatch(fileActions.deleteFile(files.file_id));
   };
 
   const bookmarkClickHandler = (fileName) => {
@@ -21,8 +21,8 @@ const FileListTable = (props) => {
       <thead>
         <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b  bg-gray-50 ">
           <th className="px-4 py-3 text-center">이름</th>
+          <th className="px-4 py-3 text-center">유저</th>
           <th className="px-4 py-3 text-center">업로드</th>
-          <th className="px-4 py-3 text-center">수정날짜</th>
           <th className="px-4 py-3 text-center">파일크기</th>
         </tr>
       </thead>
@@ -48,12 +48,12 @@ const FileListTable = (props) => {
                 </div>
               </div>
             </td>
-            <td className="px-4 py-3 text-sm text-center">{list.created_at}</td>
-            <td className="px-4 py-3 text-sm text-center">{list.created_at}</td>
             <td className="px-4 py-3 text-sm text-center">{list.user}</td>
+            <td className="px-4 py-3 text-sm text-center">{list.created_at}</td>
+            <td className="px-4 py-3 text-sm text-center">{list.file_size}</td>
             <td className="px-4 py-3">
               <button
-                onClick={() => deleteClickHandler(list.fileId)}
+                onClick={() => deleteClickHandler(list)}
                 className="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 btn-color rounded-lg focus:outline-none focus:shadow-outline-gray"
               >
                 <FaTrash />

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import { fileActions } from "../../store";
 import axios from "axios";
 import Sidebar from "../Layout/Sidebar";
@@ -13,40 +14,58 @@ import FileListTable from "../Files/FileListTable";
 
 const FilePage = () => {
   const dispatch = useDispatch();
+  const IdToken = window.sessionStorage.getItem("IdToken");
+  const AccessKeyId = window.sessionStorage.getItem("AccessKeyId");
+  const SecretKey = window.sessionStorage.getItem("SecretKey");
+  const SessionToken = window.sessionStorage.getItem("SessionToken");
+  const headers = {
+    "Content-Type": "multipart/form-data",
+    IdToken: IdToken,
+    AccessKeyId: AccessKeyId,
+    SecretKey: SecretKey,
+    SessionToken: SessionToken,
+  };
+
+  const params = useParams();
+  const userID = params.userId;
 
   // const fileList2 = useSelector((state) => state.file.file);
 
   const fileInput = useRef();
 
   const postFile = async (files) => {
-    await axios.post("http://localhost:8000/user/2/file", files);
+    console.log(files);
+    await axios
+      .post(`/user/${userID}/file`, files, {
+        headers: headers,
+      })
+      .catch((err) => console.log(err));
   };
 
-  const deleteFile = async (fileId) => {
-    await axios.delete(`http://localhost:8000/user/2/file/${fileId}`, {
-      data: {
-        fileId: fileId,
-      },
+  const deleteFile = async (files) => {
+    await axios.delete(`/user/${userID}/file/${files.file_id}`, {
+      headers: headers,
     });
   };
 
   useEffect(() => {
     async function getFile() {
-      const res = await axios.get("http://localhost:8000/user/2");
+      const res = await axios.get(`/user/${userID}`);
+      console.log(res);
       const tempFileList = res.data.file_list;
       tempFileList.map((list) => {
         const getFileBox = {
-          fileId: list.fileId,
+          file_id: list.file_id,
           title: list.title,
-          user: list.user,
+          user: userID,
           created_at: list.created_at.substr(0, 10),
+          file_size: fileSizeCheck(list.file_size),
         };
         console.log(getFileBox);
         dispatch(fileActions.addFile(getFileBox));
       });
     }
     getFile();
-    console.log("useEffect Hook");
   }, []);
 
   const fileSizeCheck = (tempSize) => {
@@ -54,9 +73,29 @@ const FilePage = () => {
       return String(Math.round(tempSize / 100000) / 10) + "MB";
     } else if (tempSize >= 1000000000) {
       return String(Math.round(tempSize / 100000000) / 10) + "GB";
-    } else {
+    } else if (tempSize >= 1000) {
       return String(Math.round(tempSize / 1000)) + "KB";
+    } else {
+      return String(Math.round(tempSize)) + "B";
     }
+  };
+
+  const dayCheck = (day) => {
+    let returnDate = "" + day;
+    if (returnDate.length < 2) {
+      returnDate = "0" + returnDate;
+    }
+
+    return returnDate;
+  };
+
+  const dateCheck = () => {
+    const now = new Date();
+    const year = "" + now.getFullYear();
+    const month = dayCheck(now.getMonth() + 1);
+    const date = dayCheck(now.getDate());
+
+    return year + "-" + month + "-" + date;
   };
 
   const clickHandler = () => {
@@ -69,15 +108,22 @@ const FilePage = () => {
     const postFileBox = e.target.files;
     for (let i = 0; i < postFileBox.length; i++) {
       if (postFileBox[i]) {
-        console.log(postFileBox[i]);
-        const fileBox = {
-          file: postFileBox[i].name,
+        const fileBox = new FormData();
+        fileBox.append("file", postFileBox[i]);
+        fileBox.append("title", postFileBox[i].name);
+        fileBox.append("file_path", "");
+        fileBox.append("owner", userID);
+        fileBox.append("file_size", postFileBox[i].size);
+
+        const storeFileBox = {
           title: postFileBox[i].name,
           file_path: `"C:/User/${postFileBox[i].name}"`,
-          user: 2,
+          user: userID,
+          file_size: fileSizeCheck(postFileBox[i].size),
+          created_at: dateCheck(),
         };
-        console.log(fileBox);
-        dispatch(fileActions.addFile(fileBox));
+
+        dispatch(fileActions.addFile(storeFileBox));
         postFile(fileBox);
       }
     }

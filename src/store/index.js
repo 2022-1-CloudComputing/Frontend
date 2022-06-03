@@ -4,6 +4,11 @@ const initialFileState = {
   file: [],
 };
 
+const initialUserState = {
+  id: "",
+  pw: "",
+};
+
 const fileSlice = createSlice({
   name: "file",
   initialState: initialFileState,
@@ -12,7 +17,7 @@ const fileSlice = createSlice({
       state.file = [...state.file, action.payload];
     },
     deleteFile(state, action) {
-      state.file = state.file.filter((list) => list.fileId !== action.payload);
+      state.file = state.file.filter((list) => list.file_id !== action.payload);
     },
     bookmarkFile(state, action) {
       const tempList = [...state.file];
@@ -24,12 +29,25 @@ const fileSlice = createSlice({
   },
 });
 
+const userSlice = createSlice({
+  name: "user",
+  initialState: initialUserState,
+  reducers: {
+    setUserInfo(state, action) {
+      state.id = action.payload.id;
+      state.pw = action.payload.pw;
+    },
+  },
+});
+
 const store = configureStore({
   reducer: {
     file: fileSlice.reducer,
+    user: userSlice.reducer,
   },
 });
 
 export const fileActions = fileSlice.actions;
+export const userActions = userSlice.actions;
 
 export default store;
