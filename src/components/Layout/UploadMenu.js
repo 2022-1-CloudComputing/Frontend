@@ -40,10 +40,13 @@ const UploadMenu = (props) => {
       {showCreateFolder && (
         <FolderCreate
           setmodalOn={props.setmodalOn}
+          onclick={props.onClick}
           setShowCreateFolder={setShowCreateFolder}
         />
       )}
-      <ul className="upload-modal-div-style">
+      <ul
+        className={"upload-modal-div-style " + (showCreateFolder && "modal-on")}
+      >
         <li>
           <div className="modal-menu-style" onClick={props.uploadBtn}>
             <span>Upload</span>

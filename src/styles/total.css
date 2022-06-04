@@ -1,7 +1,7 @@
 @tailwind base;
 @tailiwnd components;
 @tailwind utilities;
-@import url("https://fonts.googleapis.com/css2?family=Grape+Nuts&family=Jua&family=Lobster&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Grape+Nuts&family=Jua&family=Do+Hyeon&family=Lobster&display=swap");
 
 .form-input {
   -webkit-appearance: none;
@@ -355,14 +355,47 @@
   text-align: center;
   position: absolute;
   width: 100vw;
-  background-color: rgba(146, 146, 146, 0.373) !important;
+  background: rgba(146, 146, 146, 0.373) !important;
   height: 100%;
 }
 
 .create-folder-modal {
   display: inline-block;
   width: 300px;
-  height: 400px;
+  height: 200px;
   background: white;
-  margin-top: 20vh;
+  margin-top: 30vh;
+  border-radius: 10px;
+}
+
+.folder-input-box {
+  width: 100%;
+  height: 100%;
+}
+
+.folder-input-box p {
+  font-family: "Do Hyeon";
+  font-size: 35px;
+  float: left;
+  margin-top: 15px;
+  margin-left: 20px;
+}
+
+.folder-input {
+  outline: 2px solid #5d80ff;
+  border-radius: 3px;
+  height: 30px;
+  width: 85%;
+  margin-top: 18px;
+}
+
+.folder-create-btn {
+  float: right;
+  margin-right: 20px;
+  margin-top: 40px;
+  color: #5d80ff;
+}
+
+.modal-on {
+  display: none;
 }
