@@ -6,6 +6,7 @@ import FavoritesPage from "./components/pages/FavoritesPage";
 import SharePage from "./components/pages/SharePage";
 import LoginPage from "./components/pages/LoginPage";
 import RegisterPage from "./components/pages/RegisterPage";
+import ProfilePage from "./components/pages/ProfilePage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/favorites" element={<FavoritesPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/userProfile" element={<ProfilePage />} />
       </Routes> 
     </div>
   );

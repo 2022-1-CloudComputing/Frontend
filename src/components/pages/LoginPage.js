@@ -46,6 +46,12 @@ const LoginPage = () => {
     });
   }
 
+  const registerButtonHandler = () => {
+    console.log('To Register');
+
+    document.location.href = '/register';
+  }
+
   //<div className="text-3xl font-bold underline h-6">
   return (
     <div>
@@ -67,7 +73,9 @@ const LoginPage = () => {
               <input type='password' name='input_pw' value={inputPw} onChange={inputPwHandler} />
             </div>
             <div className='login-button-container'>
-              <input type='submit' value="Login" onClick={loginButtonHandler} />
+              <input type='submit' value="SignUp" onClick={registerButtonHandler} />
+              <div>&nbsp;</div>
+              <input type='submit' value="SignIn" onClick={loginButtonHandler} />
             </div>
           </div>
         </div>

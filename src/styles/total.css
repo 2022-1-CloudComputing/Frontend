@@ -331,3 +331,21 @@ input[type="submit"]:hover {
   align-items: center;
   min-height: 63vh;
 }
+
+th[type="left"] {
+  text-align: left;
+}
+
+td[type="right"] {
+  text-align: right;
+}
+
+.table-header {
+  font-size: 20px;
+  margin-bottom: 20px;
+  margin-top: auto;
+  background-clip: padding-box;
+  border-collapse: collapse;
+  border: 3px;
+  border-color: rgba(0, 0, 0, 0.08);
+}

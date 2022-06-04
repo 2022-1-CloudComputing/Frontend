@@ -89,7 +89,7 @@ const LoginPage = () => {
               <input type='password' name='input_check_pw' value={inputCheckPw} onChange={inputCheckPwHandler} />
             </div>
             <div className='login-button-container'>
-              <input type='submit' value="Register" onClick={registerButtonHandler} />
+              <input type='submit' value="SignUp" onClick={registerButtonHandler} />
             </div>
           </div>
         </div>
