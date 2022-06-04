@@ -1,12 +1,34 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import FolderCreate from "./FolderCreate";
 
 const UploadMenu = (props) => {
-  console.log("UploadMenu On");
+  const folder = useSelector((state) => state.folder.folder);
+
+  const [showCreateFolder, setShowCreateFolder] = useState(false);
+
   const outSection = useRef();
+  const IdToken = window.sessionStorage.getItem("IdToken");
+  const AccessKeyId = window.sessionStorage.getItem("AccessKeyId");
+  const SecretKey = window.sessionStorage.getItem("SecretKey");
+  const SessionToken = window.sessionStorage.getItem("SessionToken");
+  const headers = {
+    "Content-Type": "multipart/form-data",
+    IdToken: IdToken,
+    AccessKeyId: AccessKeyId,
+    SecretKey: SecretKey,
+    SessionToken: SessionToken,
+  };
 
   const outClickHandler = (e) => {
     if (outSection.current === e.target) props.onClick(false);
+  };
+
+  const createFolder = () => {
+    setShowCreateFolder(true);
+    props.setmodalOn(true);
   };
 
   return (
@@ -15,6 +37,12 @@ const UploadMenu = (props) => {
       ref={outSection}
       onClick={outClickHandler}
     >
+      {showCreateFolder && (
+        <FolderCreate
+          setmodalOn={props.setmodalOn}
+          setShowCreateFolder={setShowCreateFolder}
+        />
+      )}
       <ul className="upload-modal-div-style">
         <li>
           <div className="modal-menu-style" onClick={props.uploadBtn}>
@@ -22,11 +50,11 @@ const UploadMenu = (props) => {
           </div>
         </li>
         <li>
-          <Link to="/group">
+          <div onClick={createFolder}>
             <div className="modal-menu-style">
               <span>Create Folder</span>
             </div>
-          </Link>
+          </div>
         </li>
       </ul>
     </div>

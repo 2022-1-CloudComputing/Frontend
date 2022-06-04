@@ -21,11 +21,16 @@ const sideBarData = [
   },
 ];
 
-const Sidebar = () => {
+const Sidebar = (props) => {
   const router = useLocation();
 
   return (
-    <aside className="z-20 flex-shrink-0 hidden w-64 overflow-y-auto bg-white md:block">
+    <aside
+      className={
+        "z-20 flex-shrink-0 hidden w-64 overflow-y-auto md:block " +
+        (!props.modalOn && "bg-white")
+      }
+    >
       <div className="py-4 text-gray-500 ">
         <a className="title-size font-bold text-gray-800 title-center">OU</a>
         <ul className="mt-6">

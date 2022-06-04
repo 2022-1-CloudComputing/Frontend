@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { bookmarkActions, fileActions } from "../../store";
+import { bookmarkActions, fileActions, folderActions } from "../../store";
 import axios from "axios";
 import Sidebar from "../Layout/Sidebar";
 import TotalPage from "../Layout/TotalPage";
@@ -14,6 +14,8 @@ import FileListTable from "../Files/FileListTable";
 
 const FilePage = () => {
   const initFile = useSelector((state) => state.file.file);
+  const initFolder = useSelector((state) => state.folder.folder);
+  const [modalOn, setmodalOn] = useState(false);
 
   const dispatch = useDispatch();
   const IdToken = window.sessionStorage.getItem("IdToken");
@@ -67,6 +69,22 @@ const FilePage = () => {
         dispatch(fileActions.addFile(getFileBox));
       });
     }
+    async function getFolder() {
+      const res = await axios.get(`/folder_elements/1/list?id=${userID}`, {
+        headers: headers,
+      });
+
+      res.data.folders.map((list) => {
+        const folderBox = {
+          name: list.name.substr(0, list.name.length - 1),
+          created_at: list.created_at.substr(0, 10),
+          folder_id: list.folder_id,
+          parent_id: list.parent_id,
+          user: list.user_id,
+        };
+        dispatch(folderActions.addFolder(folderBox));
+      });
+    }
     async function getBookmark() {
       let tempList = [];
       const res2 = await axios.get(`/user/${userID}/bookmark`);
@@ -76,9 +94,10 @@ const FilePage = () => {
       dispatch(bookmarkActions.setBookmark(tempList));
     }
 
-    if (initFile.length === 0) {
+    if (initFile.length === 0 && initFolder.length === 0) {
       getFile();
       getBookmark();
+      getFolder();
     }
   }, []);
 
@@ -130,6 +149,7 @@ const FilePage = () => {
         fileBox.append("file_size", postFileBox[i].size);
 
         const storeFileBox = {
+          isClicked: false,
           title: postFileBox[i].name,
           file_path: `"C:/User/${postFileBox[i].name}"`,
           user: userID,
@@ -145,11 +165,13 @@ const FilePage = () => {
 
   return (
     <TotalPage>
-      <Sidebar />
+      <Sidebar modalOn={modalOn} />
       <RightPage>
         <RightContainer>
           <MainContent>
-            <UploadButton onclick={clickHandler}>+</UploadButton>
+            <UploadButton setmodalOn={setmodalOn} onclick={clickHandler}>
+              +
+            </UploadButton>
             <FileInput onChange={handleChangeFile} fileRef={fileInput} />
           </MainContent>
           <FileListTable deleteFile={deleteFile} />

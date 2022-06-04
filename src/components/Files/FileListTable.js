@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fileActions, bookmarkActions } from "../../store";
-import { FaBookmark, FaRegBookmark, FaTrash } from "react-icons/fa";
+import { fileActions, bookmarkActions, clickedActions } from "../../store";
+import { FaBookmark, FaRegBookmark, FaTrash, FaFolder } from "react-icons/fa";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
@@ -10,10 +10,15 @@ const FileListTable = (props) => {
   const userID = params.userId;
 
   const fileList = useSelector((state) => state.file.file);
+  const folderList = useSelector((state) => state.folder.folder);
   const bookmarkId = useSelector((state) => state.bookmark.file_id);
   // console.log(bookmarkId);
 
   const dispatch = useDispatch();
+
+  const clickHandler = (fileId) => {
+    dispatch(fileActions.fileClicked(fileId));
+  };
 
   const deleteClickHandler = (files) => {
     props.deleteFile(files);
@@ -49,8 +54,43 @@ const FileListTable = (props) => {
         </tr>
       </thead>
       <tbody className="bg-white divide-y ">
+        {folderList.map((list) => (
+          <tr className={"text-gray-700 "} key={Math.random()}>
+            <td className="px-4 py-3">
+              <div className="flex items-center text-sm">
+                <div className="relatevie hidden w-8 mr-3 rounded-full md:block">
+                  <span>
+                    <div>
+                      <FaFolder />
+                    </div>
+                  </span>
+                </div>
+                <div>
+                  <p className="font-semibold">{list.name}</p>
+                </div>
+              </div>
+            </td>
+            <td className="px-4 py-3 text-sm text-center">{list.user}</td>
+            <td className="px-4 py-3 text-sm text-center">{list.created_at}</td>
+            <td className="px-4 py-3 text-sm text-center">-</td>
+            <td className="px-4 py-3">
+              <button
+                onClick={() => deleteClickHandler(list)}
+                className="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 btn-color rounded-lg focus:outline-none focus:shadow-outline-gray"
+              >
+                <FaTrash />
+              </button>
+            </td>
+          </tr>
+        ))}
         {fileList.map((list) => (
-          <tr className="text-gray-700 " key={Math.random()}>
+          <tr
+            className={
+              "text-gray-700 " + (list.isClicked ? "file-clicked" : "")
+            }
+            key={Math.random()}
+            onClick={() => clickHandler(list.file_id)}
+          >
             <td className="px-4 py-3">
               <div className="flex items-center text-sm">
                 <div className="relatevie hidden w-8 mr-3 rounded-full md:block bookmark-color">

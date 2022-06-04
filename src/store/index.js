@@ -13,6 +13,10 @@ const initialUserState = {
   pw: "",
 };
 
+const initialFolderState = {
+  folder: [],
+};
+
 const fileSlice = createSlice({
   name: "file",
   initialState: initialFileState,
@@ -22,6 +26,13 @@ const fileSlice = createSlice({
     },
     deleteFile(state, action) {
       state.file = state.file.filter((list) => list.file_id !== action.payload);
+    },
+    fileClicked(state, action) {
+      state.file.map((list) => {
+        if (list.file_id === action.payload) {
+          list.isClicked = !list.isClicked;
+        }
+      });
     },
   },
 });
@@ -55,16 +66,28 @@ const userSlice = createSlice({
   },
 });
 
+const folderSlice = createSlice({
+  name: "folder",
+  initialState: initialFolderState,
+  reducers: {
+    addFolder(state, action) {
+      state.folder = [...state.folder, action.payload];
+    },
+  },
+});
+
 const store = configureStore({
   reducer: {
     file: fileSlice.reducer,
     user: userSlice.reducer,
     bookmark: bookmarkSlice.reducer,
+    folder: folderSlice.reducer,
   },
 });
 
 export const fileActions = fileSlice.actions;
 export const userActions = userSlice.actions;
 export const bookmarkActions = bookmarkSlice.actions;
+export const folderActions = folderSlice.actions;
 
 export default store;

@@ -15,7 +15,11 @@ const UploadButton = (props) => {
           {props.children}
         </button>
       ) : (
-        <UploadMenu uploadBtn={props.onclick} onClick={setShowUploadMenu} />
+        <UploadMenu
+          setmodalOn={props.setmodalOn}
+          uploadBtn={props.onclick}
+          onClick={setShowUploadMenu}
+        />
       )}
     </div>
   );

@@ -346,3 +346,23 @@
   align-items: center;
   min-height: 63vh;
 }
+
+.file-clicked {
+  background-color: #e4e4e4;
+}
+
+.folder-container {
+  text-align: center;
+  position: absolute;
+  width: 100vw;
+  background-color: rgba(146, 146, 146, 0.373) !important;
+  height: 100%;
+}
+
+.create-folder-modal {
+  display: inline-block;
+  width: 300px;
+  height: 400px;
+  background: white;
+  margin-top: 20vh;
+}
