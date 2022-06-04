@@ -5,7 +5,7 @@ const UserMenu = (props) => {
   const outSection = useRef();
 
   const outClickHandler = (e) => {
-    if (outSection.current === e.target) props.onClick(false);
+    if (outSection.current === e.target) props.setShowProfileMenu(false);
   };
 
   const logoutHandler = (e) => {

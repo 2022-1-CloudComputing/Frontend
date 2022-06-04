@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fileActions } from "../../store";
+import { bookmarkActions, fileActions } from "../../store";
 import axios from "axios";
 import Sidebar from "../Layout/Sidebar";
 import TotalPage from "../Layout/TotalPage";
@@ -13,6 +13,8 @@ import FileInput from "../Files/FileInput";
 import FileListTable from "../Files/FileListTable";
 
 const FilePage = () => {
+  const initFile = useSelector((state) => state.file.file);
+
   const dispatch = useDispatch();
   const IdToken = window.sessionStorage.getItem("IdToken");
   const AccessKeyId = window.sessionStorage.getItem("AccessKeyId");
@@ -61,11 +63,23 @@ const FilePage = () => {
           created_at: list.created_at.substr(0, 10),
           file_size: fileSizeCheck(list.file_size),
         };
-        console.log(getFileBox);
+
         dispatch(fileActions.addFile(getFileBox));
       });
     }
-    getFile();
+    async function getBookmark() {
+      let tempList = [];
+      const res2 = await axios.get(`/user/${userID}/bookmark`);
+      console.log(res2);
+      res2.data.map((list) => tempList.push(list.file.file_id));
+
+      dispatch(bookmarkActions.setBookmark(tempList));
+    }
+
+    if (initFile.length === 0) {
+      getFile();
+      getBookmark();
+    }
   }, []);
 
   const fileSizeCheck = (tempSize) => {

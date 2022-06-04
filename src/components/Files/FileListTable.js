@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fileActions } from "../../store";
+import { fileActions, bookmarkActions } from "../../store";
 import { FaBookmark, FaRegBookmark, FaTrash } from "react-icons/fa";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const FileListTable = (props) => {
+  const params = useParams();
+  const userID = params.userId;
+
   const fileList = useSelector((state) => state.file.file);
+  const bookmarkId = useSelector((state) => state.bookmark.file_id);
+  // console.log(bookmarkId);
+
   const dispatch = useDispatch();
 
   const deleteClickHandler = (files) => {
@@ -12,8 +20,22 @@ const FileListTable = (props) => {
     dispatch(fileActions.deleteFile(files.file_id));
   };
 
-  const bookmarkClickHandler = (fileName) => {
-    dispatch(fileActions.bookmarkFile(fileName));
+  const addBookmarkClickHandler = async (fileId) => {
+    axios
+      .post(`/user/${userID}/bookmark`, {
+        fileId: fileId,
+      })
+      .then((res) => console.log(res));
+
+    dispatch(bookmarkActions.addBookmark(fileId));
+  };
+
+  const deleteBookmarkClickHandler = (fileId) => {
+    axios
+      .delete(`/user/${userID}/bookmark/${fileId}`)
+      .then((res) => console.log(res));
+
+    dispatch(bookmarkActions.deleteBookmark(fileId));
   };
 
   return (
@@ -31,15 +53,21 @@ const FileListTable = (props) => {
           <tr className="text-gray-700 " key={Math.random()}>
             <td className="px-4 py-3">
               <div className="flex items-center text-sm">
-                <div
-                  className="relatevie hidden w-8 mr-3 rounded-full md:block bookmark-color"
-                  onClick={() => bookmarkClickHandler(list.title)}
-                >
+                <div className="relatevie hidden w-8 mr-3 rounded-full md:block bookmark-color">
                   <span>
-                    {list.bookmark === true ? (
-                      <FaBookmark />
+                    {bookmarkId.indexOf(list.file_id) !== -1 ? (
+                      <div
+                        className="onBookmark"
+                        onClick={() => deleteBookmarkClickHandler(list.file_id)}
+                      >
+                        <FaBookmark />
+                      </div>
                     ) : (
-                      <FaRegBookmark />
+                      <div
+                        onClick={() => addBookmarkClickHandler(list.file_id)}
+                      >
+                        <FaRegBookmark />
+                      </div>
                     )}
                   </span>
                 </div>

@@ -8,16 +8,16 @@ const userId = window.sessionStorage.getItem("Id");
 const sideBarData = [
   { id: "side1", name: "My Box", path: `/${userId}/file`, icon: <FaHome /> },
   {
+    id: "side3",
+    name: "Bookmark",
+    path: `/${userId}/favorites`,
+    icon: <FaBookmark />,
+  },
+  {
     id: "side2",
     name: "Share Box",
     path: `/${userId}/share`,
     icon: <FaUsers />,
-  },
-  {
-    id: "side3",
-    name: "Favorites",
-    path: `/${userId}/favorites`,
-    icon: <FaBookmark />,
   },
 ];
 
