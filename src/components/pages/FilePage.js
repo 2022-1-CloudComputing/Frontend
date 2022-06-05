@@ -43,7 +43,7 @@ const FilePage = () => {
       .post(`/user/${userID}/file`, files, {
         headers: headers,
       })
-      .then((res) => console.log(res))
+      .then((res) => console.log(res.data.file_name[0]))
       .catch((err) => console.log(err));
   };
 
@@ -61,7 +61,8 @@ const FilePage = () => {
       dispatch(fileActions.resetFile([]));
       dispatch(fileActions.resetTotalFile([]));
 
-      console.log(initFile);
+      // console.log(initFile);
+      console.log(tempFileList);
       tempFileList.map((list) => {
         if (list.folder_id === 1) {
           const getFileBox = {
@@ -74,10 +75,11 @@ const FilePage = () => {
 
           dispatch(fileActions.addFile(getFileBox));
         }
+
         dispatch(
           fileActions.addTotalFile({
             file_id: list.file_id,
-            title: list.title,
+            title: list.title.toString(),
             user: userID,
             created_at: list.created_at.substr(0, 10),
             file_size: fileSizeCheck(list.file_size),
@@ -90,7 +92,6 @@ const FilePage = () => {
         headers: headers,
       });
       dispatch(folderActions.resetFolder([]));
-      console.log(initFolder);
 
       res.data.folders.map((list) => {
         const folderBox = {
@@ -155,6 +156,7 @@ const FilePage = () => {
     e.preventDefault();
 
     const postFileBox = e.target.files;
+
     for (let i = 0; i < postFileBox.length; i++) {
       if (postFileBox[i]) {
         const fileBox = new FormData();

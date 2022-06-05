@@ -7,6 +7,7 @@ import SharePage from "./components/pages/SharePage";
 import LoginPage from "./components/pages/LoginPage";
 import RegisterPage from "./components/pages/RegisterPage";
 import FolderPage from "./components/pages/FolderPage";
+import SearchPage from "./components/pages/SearchPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           path="/:userId/folder/:folderId/:folderName"
           element={<FolderPage />}
         />
+        <Route path="/search/:searchtext" element={<SearchPage />} />
       </Routes>
     </div>
   );

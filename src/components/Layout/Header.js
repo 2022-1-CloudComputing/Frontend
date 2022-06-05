@@ -1,12 +1,21 @@
 import React, { useState } from "react";
 import { FaWrench, FaRegUserCircle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import UserMenu from "./UserMenu";
 
-const Header = () => {
+const Header = (props) => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+
+  const navigate = useNavigate();
 
   const userIconClickHandler = () => {
     setShowProfileMenu(true);
+  };
+
+  const keyPressHandler = (e) => {
+    if (e.key === "Enter") {
+      navigate(`/search/${e.target.value}`);
+    }
   };
 
   return (
@@ -33,6 +42,7 @@ const Header = () => {
               type="text"
               placeholder="Search for files"
               aria-label="Search"
+              onKeyPress={keyPressHandler}
             />
           </div>
         </div>
