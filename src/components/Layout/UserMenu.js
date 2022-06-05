@@ -5,7 +5,7 @@ import settings from '../../settings.json';
 
 const UserMenu = (props) => {
   const outSection = useRef();
-
+  
   const accessToken = window.sessionStorage.getItem("AccessToken");
 
   const outClickHandler = (e) => {
@@ -13,9 +13,9 @@ const UserMenu = (props) => {
     if (outSection.current === e.target) props.setShowProfileMenu(false);
     console.log(outSection.current);
   };
-
+  
   const logoutHandler = (e) => {
-    axios.post(settings.LogoutIP, {
+    axios.post(settings.LogoutIP, null, {
       headers: {
         "Authorization": `Bearer ${accessToken}`
       }

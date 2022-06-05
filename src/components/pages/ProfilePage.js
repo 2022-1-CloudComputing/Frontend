@@ -9,7 +9,11 @@ const ProfilePage = () => {
     const name = window.sessionStorage.getItem("Name");
     const email = window.sessionStorage.getItem("Email");
 
+    // dropout api not work
     const dropoutButtonHandler = () => {
+        // if dropout api work, delete this
+        document.location.href = '/';
+
         axios.post(settings.DropoutIP, {
             "id": id,
             "name": name,
@@ -21,7 +25,7 @@ const ProfilePage = () => {
             
             window.sessionStorage.clear();
 
-            document.location.href = '/';
+            //document.location.href = '/';
         });
     }
 
