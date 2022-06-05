@@ -1,24 +1,35 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaHome, FaUsers, FaBookmark } from 'react-icons/fa';
-import { useLocation } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import { FaHome, FaUsers, FaBookmark } from "react-icons/fa";
+import { useLocation } from "react-router-dom";
 
-const sideBarData = [
-  { id: 'side1', name: 'My Box', path: '/file', icon: <FaHome /> },
-  { id: 'side2', name: 'Share Box', path: '/share', icon: <FaUsers /> },
-  {
-    id: 'side3',
-    name: 'Favorites',
-    path: '/favorites',
-    icon: <FaBookmark />,
-  },
-];
+const Sidebar = (props) => {
+  const userId = window.sessionStorage.getItem("Id");
 
-const Sidebar = () => {
+  const sideBarData = [
+    { id: "side1", name: "My Box", path: `/${userId}/file`, icon: <FaHome /> },
+    {
+      id: "side3",
+      name: "Bookmark",
+      path: `/${userId}/favorites`,
+      icon: <FaBookmark />,
+    },
+    {
+      id: "side2",
+      name: "Share Box",
+      path: `/${userId}/share`,
+      icon: <FaUsers />,
+    },
+  ];
   const router = useLocation();
 
   return (
-    <aside className="z-20 flex-shrink-0 hidden w-64 overflow-y-auto bg-white md:block">
+    <aside
+      className={
+        "z-20 flex-shrink-0 hidden w-64 overflow-y-auto md:block " +
+        (!props.modalOn && "bg-white")
+      }
+    >
       <div className="py-4 text-gray-500 ">
         <a className="title-size font-bold text-gray-800 title-center">OU</a>
         <ul className="mt-6">
@@ -27,13 +38,13 @@ const Sidebar = () => {
               {side.path === router.pathname ? (
                 <span className="absolute inset-y-0 left-0 w-1 side-selected rounded-tr-lg rounded-br-lg"></span>
               ) : (
-                ''
+                ""
               )}
 
               <div
                 className={
-                  'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 ' +
-                  (side.path === router.pathname ? 'text-gray-800' : '')
+                  "inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 " +
+                  (side.path === router.pathname ? "text-gray-800" : "")
                 }
               >
                 <svg

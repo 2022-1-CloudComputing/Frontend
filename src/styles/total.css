@@ -1,7 +1,7 @@
 @tailwind base;
 @tailiwnd components;
 @tailwind utilities;
-@import url("https://fonts.googleapis.com/css2?family=Grape+Nuts&family=Jua&family=Lobster&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Grape+Nuts&family=Jua&family=Do+Hyeon&family=Lobster&display=swap");
 
 .form-input {
   -webkit-appearance: none;
@@ -60,8 +60,8 @@
   position: fixed;
   right: 0;
   bottom: 0;
-  margin-right: 20px;
-  margin-bottom: 20px;
+  margin-right: 30px;
+  margin-bottom: 30px;
   z-index: 10000;
 }
 .upload-button {
@@ -145,6 +145,22 @@
   background-color: rgba(244, 245, 247, 1);
   color: #1a1c23;
   color: rgba(26, 28, 35, 1);
+}
+
+.upload-modal-div-style {
+  padding: 0.5rem;
+  position: fixed;
+  color: rgb(81, 81, 81);
+  bottom: 4vh;
+  right: 30px;
+  width: 200px;
+  height: 74px;
+  border-radius: 10px;
+  border: 0;
+  background: #ffffff;
+  font-size: 20;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .main-top-container {
@@ -297,13 +313,12 @@
   justify-content: center;
 }
 
-input[type="text"],
-input[type="password"] {
+.login-input-container input {
   height: 25px;
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-input[type="submit"] {
+.login-button-container input {
   margin-top: 10px;
   cursor: pointer;
   font-size: 15px;
@@ -313,7 +328,7 @@ input[type="submit"] {
   padding: 10px 20px;
 }
 
-input[type="submit"]:hover {
+.login-button-container input:hover {
   background: #6cf0c2;
 }
 
@@ -362,4 +377,149 @@ input[value="DropOut"] {
 
 input[value="DropOut"]:hover {
   background: #ff7777;
+}
+
+.file-clicked {
+  background-color: #e4e4e4;
+}
+
+.folder-container {
+  text-align: center;
+  position: absolute;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  background: rgba(146, 146, 146, 0.373) !important;
+  height: 100%;
+}
+
+.create-folder-modal {
+  display: inline-block;
+  width: 300px;
+  height: 200px;
+  background: white;
+  margin-top: 30vh;
+  border-radius: 10px;
+}
+
+.folder-input-box {
+  width: 100%;
+  height: 100%;
+}
+
+.folder-input-box p {
+  font-family: "Do Hyeon";
+  font-size: 35px;
+  float: left;
+  margin-top: 15px;
+  margin-left: 20px;
+}
+
+.folder-input {
+  outline: 2px solid #5d80ff;
+  border-radius: 3px;
+  height: 30px;
+  width: 85%;
+  margin-top: 18px;
+}
+
+.folder-create-btn {
+  float: right;
+  margin-right: 20px;
+  margin-top: 40px;
+  color: #5d80ff;
+}
+
+.modal-on {
+  display: none;
+}
+
+.filename-tag {
+  width: 100%;
+}
+
+.filename {
+  float: left;
+}
+
+.tag {
+  width: 100%;
+  float: right;
+  height: 14px;
+}
+
+.tagbox {
+  width: 100%;
+  height: 100%;
+}
+
+.tag-icon {
+  float: left;
+  width: 5%;
+  margin-left: 5px;
+  color: rgba(165, 154, 154, 0.729);
+}
+
+.tagname {
+  float: right;
+  width: 87%;
+  color: rgba(165, 154, 154, 0.729);
+  font-size: 12px;
+  margin-top: -3px;
+}
+
+.tag-container {
+  text-align: center;
+  position: absolute;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+
+  height: 100%;
+}
+
+.create-tag-modal {
+  display: inline-block;
+  width: 300px;
+  height: 200px;
+  background: white;
+  margin-top: 25vh;
+  margin-right: 400px;
+  border-radius: 10px;
+  outline: 1px solid #63b3ed;
+  box-shadow: 1px 1px 1px 1px #41403e;
+}
+
+.tag-input-box {
+  width: 100%;
+  height: 100%;
+}
+
+.tag-input-box p {
+  font-family: "Do Hyeon";
+  font-size: 35px;
+  float: left;
+  margin-top: 15px;
+  margin-left: 20px;
+}
+
+.tag-input {
+  outline: 2px solid #5d80ff;
+  border-radius: 3px;
+  height: 30px;
+  width: 85%;
+  margin-top: 18px;
+}
+
+.tag-create-btn {
+  float: right;
+  margin-right: 20px;
+  margin-top: 40px;
+  color: #5d80ff;
+}
+
+.tag-delete h1 {
+  display: flex;
+  width: 100%;
+  font-size: 23px;
+  padding-top: 15px;
+  padding-left: 30px;
 }

@@ -11,10 +11,9 @@ import RightContainer from "../Layout/RightContainer";
 import MainContent from "../Layout/MainContent";
 import FileInput from "../Files/FileInput";
 import FileListTable from "../Files/FileListTable";
+import FolderListTable from "../Files/FolderListTable";
 
-const FilePage = () => {
-  const initFile = useSelector((state) => state.file.file);
-  const initFolder = useSelector((state) => state.folder.folder);
+const FolderPage = () => {
   const [modalOn, setmodalOn] = useState(false);
 
   const dispatch = useDispatch();
@@ -32,6 +31,8 @@ const FilePage = () => {
 
   const params = useParams();
   const userID = params.userId;
+  const folderID = params.folderId;
+  const folderName = params.folderName;
 
   // const fileList2 = useSelector((state) => state.file.file);
 
@@ -43,7 +44,6 @@ const FilePage = () => {
       .post(`/user/${userID}/file`, files, {
         headers: headers,
       })
-      .then((res) => console.log(res.data.file_name[0]))
       .catch((err) => console.log(err));
   };
 
@@ -52,79 +52,6 @@ const FilePage = () => {
       headers: headers,
     });
   };
-
-  useEffect(() => {
-    async function getFile() {
-      const res = await axios.get(`/user/${userID}`);
-      // console.log(tagRes.data);
-      console.log(res);
-      const tempFileList = res.data.file_list;
-      dispatch(fileActions.resetFile([]));
-      dispatch(fileActions.resetTotalFile([]));
-
-      // console.log(initFile);
-      // console.log(tempFileList);
-      tempFileList.map(async (list) => {
-        const tagRes = await axios.get(
-          `/user/${userID}/search/tag/${list.file_id}`
-        );
-        if (list.folder_id === 1) {
-          // console.log(tagRes.data.length ? tagRes.data : "No");
-          const getFileBox = {
-            file_id: list.file_id,
-            title: list.title,
-            user: userID,
-            created_at: list.created_at.substr(0, 10),
-            file_size: fileSizeCheck(list.file_size),
-            tag: tagRes.data.length ? tagRes.data[0].name : "",
-          };
-
-          dispatch(fileActions.addFile(getFileBox));
-        }
-
-        dispatch(
-          fileActions.addTotalFile({
-            file_id: list.file_id,
-            title: list.title.toString(),
-            user: userID,
-            created_at: list.created_at.substr(0, 10),
-            file_size: fileSizeCheck(list.file_size),
-            tag: tagRes.data.length ? tagRes.data[0].name : "",
-          })
-        );
-      });
-    }
-    async function getFolder() {
-      const res = await axios.get(`/folder_elements/1/list?id=${userID}`, {
-        headers: headers,
-      });
-      dispatch(folderActions.resetFolder([]));
-      console.log(res);
-
-      res.data.folders.map((list) => {
-        const folderBox = {
-          name: list.name.substr(0, list.name.length - 1),
-          created_at: list.created_at.substr(0, 10),
-          folder_id: list.folder_id,
-          parent_id: list.parent_id,
-          user: list.user_id,
-        };
-        dispatch(folderActions.addFolder(folderBox));
-      });
-    }
-    async function getBookmark() {
-      let tempList = [];
-      const res2 = await axios.get(`/user/${userID}/bookmark`);
-      console.log(res2);
-      res2.data.map((list) => tempList.push(list.file.file_id));
-
-      dispatch(bookmarkActions.setBookmark(tempList));
-    }
-
-    getFile();
-    getBookmark();
-    getFolder();
-  }, []);
 
   const fileSizeCheck = (tempSize) => {
     if (tempSize >= 1000000) {
@@ -164,13 +91,12 @@ const FilePage = () => {
     e.preventDefault();
 
     const postFileBox = e.target.files;
-
     for (let i = 0; i < postFileBox.length; i++) {
       if (postFileBox[i]) {
         const fileBox = new FormData();
         fileBox.append("file", postFileBox[i]);
         fileBox.append("title", postFileBox[i].name);
-        fileBox.append("file_path", "");
+        fileBox.append("file_path", "/" + folderName + "/");
         fileBox.append("owner", userID);
         fileBox.append("file_size", postFileBox[i].size);
 
@@ -195,16 +121,17 @@ const FilePage = () => {
       <RightPage>
         <RightContainer>
           <MainContent>
+            /{folderName}
             <UploadButton setmodalOn={setmodalOn} onclick={clickHandler}>
               +
             </UploadButton>
             <FileInput onChange={handleChangeFile} fileRef={fileInput} />
           </MainContent>
-          <FileListTable deleteFile={deleteFile} />
+          <FolderListTable deleteFile={deleteFile} />
         </RightContainer>
       </RightPage>
     </TotalPage>
   );
 };
 
-export default FilePage;
+export default FolderPage;
