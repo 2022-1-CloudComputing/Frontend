@@ -9,6 +9,8 @@ import RegisterPage from "./components/pages/RegisterPage";
 import FolderPage from "./components/pages/FolderPage";
 import SearchPage from "./components/pages/SearchPage";
 
+import TagSearchPage from "./components/pages/TagSearchPage";
+
 function App() {
   return (
     <div className="App">
@@ -24,6 +26,7 @@ function App() {
           element={<FolderPage />}
         />
         <Route path="/search/:searchtext" element={<SearchPage />} />
+        <Route path="/search/tag/:tag" element={<TagSearchPage />} />
       </Routes>
     </div>
   );

@@ -14,7 +14,13 @@ const Header = (props) => {
 
   const keyPressHandler = (e) => {
     if (e.key === "Enter") {
-      navigate(`/search/${e.target.value}`);
+      if (e.target.value[0] === "#") {
+        navigate(
+          `/search/tag/${e.target.value.substr(1, e.target.value.length)}`
+        );
+      } else {
+        navigate(`/search/${e.target.value}`);
+      }
     }
   };
 
