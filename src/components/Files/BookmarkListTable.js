@@ -9,7 +9,7 @@ const BookmarkListTable = (props) => {
   const params = useParams();
   const userID = params.userId;
 
-  const fileList = useSelector((state) => state.file.file);
+  const fileList = useSelector((state) => state.file.totalFile);
   const bookmarkId = useSelector((state) => state.bookmark.file_id);
   // console.log(bookmarkId);
 

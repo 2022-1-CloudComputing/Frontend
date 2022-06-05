@@ -59,6 +59,8 @@ const FilePage = () => {
       console.log(res);
       const tempFileList = res.data.file_list;
       dispatch(fileActions.resetFile([]));
+      dispatch(fileActions.resetTotalFile([]));
+
       console.log(initFile);
       tempFileList.map((list) => {
         if (list.folder_id === 1) {
@@ -72,6 +74,15 @@ const FilePage = () => {
 
           dispatch(fileActions.addFile(getFileBox));
         }
+        dispatch(
+          fileActions.addTotalFile({
+            file_id: list.file_id,
+            title: list.title,
+            user: userID,
+            created_at: list.created_at.substr(0, 10),
+            file_size: fileSizeCheck(list.file_size),
+          })
+        );
       });
     }
     async function getFolder() {

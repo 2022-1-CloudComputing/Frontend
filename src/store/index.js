@@ -25,6 +25,9 @@ const fileSlice = createSlice({
     addFile(state, action) {
       state.file = [...state.file, action.payload];
     },
+    addTotalFile(state, action) {
+      state.totalFile = [...state.totalFile, action.payload];
+    },
     deleteFile(state, action) {
       state.file = state.file.filter((list) => list.file_id !== action.payload);
     },
@@ -37,6 +40,9 @@ const fileSlice = createSlice({
     },
     resetFile(state, action) {
       state.file = action.payload;
+    },
+    resetTotalFile(state, action) {
+      state.totalFile = action.payload;
     },
   },
 });
