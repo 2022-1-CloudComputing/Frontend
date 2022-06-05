@@ -2,6 +2,7 @@ import { createSlice, configureStore } from "@reduxjs/toolkit";
 
 const initialFileState = {
   file: [],
+  totalFile: [],
 };
 
 const initialBookmarkState = {
@@ -33,6 +34,9 @@ const fileSlice = createSlice({
           list.isClicked = !list.isClicked;
         }
       });
+    },
+    resetFile(state, action) {
+      state.file = action.payload;
     },
   },
 });
@@ -72,6 +76,9 @@ const folderSlice = createSlice({
   reducers: {
     addFolder(state, action) {
       state.folder = [...state.folder, action.payload];
+    },
+    resetFolder(state, action) {
+      state.folder = action.payload;
     },
   },
 });

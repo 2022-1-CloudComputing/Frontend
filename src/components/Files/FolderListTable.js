@@ -1,22 +1,131 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { fileActions, bookmarkActions, clickedActions } from "../../store";
+import {
+  fileActions,
+  bookmarkActions,
+  clickedActions,
+  folderActions,
+} from "../../store";
 import { FaBookmark, FaRegBookmark, FaTrash, FaFolder } from "react-icons/fa";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-const FileListTable = (props) => {
+const FolderListTable = (props) => {
   const params = useParams();
   const userID = params.userId;
   const navigate = useNavigate();
 
-  const fileList = useSelector((state) => state.file.file);
-  const folderList = useSelector((state) => state.folder.folder);
+  const [nextFileList, setNextFileList] = useState([]);
+  const [nextFolderList, setNextFolderList] = useState([]);
+
   const bookmarkId = useSelector((state) => state.bookmark.file_id);
-  // console.log(bookmarkId);
+
+  const initFile = useSelector((state) => state.file.file);
+  const initFolder = useSelector((state) => state.folder.folder);
 
   const dispatch = useDispatch();
+  const IdToken = window.sessionStorage.getItem("IdToken");
+  const AccessKeyId = window.sessionStorage.getItem("AccessKeyId");
+  const SecretKey = window.sessionStorage.getItem("SecretKey");
+  const SessionToken = window.sessionStorage.getItem("SessionToken");
+  const headers = {
+    "Content-Type": "multipart/form-data",
+    IdToken: IdToken,
+    AccessKeyId: AccessKeyId,
+    SecretKey: SecretKey,
+    SessionToken: SessionToken,
+  };
+
+  const folderID = params.folderId;
+
+  const fileSizeCheck = (tempSize) => {
+    if (tempSize >= 1000000) {
+      return String(Math.round(tempSize / 100000) / 10) + "MB";
+    } else if (tempSize >= 1000000000) {
+      return String(Math.round(tempSize / 100000000) / 10) + "GB";
+    } else if (tempSize >= 1000) {
+      return String(Math.round(tempSize / 1000)) + "KB";
+    } else {
+      return String(Math.round(tempSize)) + "B";
+    }
+  };
+
+  const dayCheck = (day) => {
+    let returnDate = "" + day;
+    if (returnDate.length < 2) {
+      returnDate = "0" + returnDate;
+    }
+
+    return returnDate;
+  };
+
+  const dateCheck = () => {
+    const now = new Date();
+    const year = "" + now.getFullYear();
+    const month = dayCheck(now.getMonth() + 1);
+    const date = dayCheck(now.getDate());
+
+    return year + "-" + month + "-" + date;
+  };
+
+  useEffect(() => {
+    async function getFile() {
+      dispatch(fileActions.resetFile([]));
+      const res = await axios.get(
+        `/folder_elements/${folderID}/list?id=${userID}`,
+        {
+          headers: headers,
+        }
+      );
+      res.data.files.map((list) => {
+        const fileBox = {
+          title: list.title,
+          created_at: list.created_at.substr(0, 10),
+          folder_id: list.folder_id,
+          file_id: list.file_id,
+          user: list.owner,
+          file_size: fileSizeCheck(list.file_size),
+        };
+
+        dispatch(fileActions.addFile(fileBox));
+      });
+    }
+    async function getFolder() {
+      dispatch(folderActions.resetFolder([]));
+      const res = await axios.get(
+        `/folder_elements/${folderID}/list?id=${userID}`,
+        {
+          headers: headers,
+        }
+      );
+      res.data.folders.map((list) => {
+        const folderBox = {
+          user: list.user_id,
+          path: "",
+          name: list.name.substr(0, list.name.length - 1),
+          user_id: list.user_id,
+          parent_id: list.parent_id,
+          created_at: dateCheck(),
+        };
+
+        dispatch(folderActions.addFolder(folderBox));
+      });
+      //   setNextFolderList(res.data.folders);
+    }
+    async function getBookmark() {
+      let tempList = [];
+      const res2 = await axios.get(`/user/${userID}/bookmark`);
+      //   console.log(res2);
+      res2.data.map((list) => tempList.push(list.file.file_id));
+
+      dispatch(bookmarkActions.setBookmark(tempList));
+    }
+
+    getFile();
+    getBookmark();
+    getFolder();
+  }, []);
 
   const clickHandler = (fileId) => {
     dispatch(fileActions.fileClicked(fileId));
@@ -56,7 +165,7 @@ const FileListTable = (props) => {
         </tr>
       </thead>
       <tbody className="bg-white divide-y ">
-        {folderList.map((list) => (
+        {initFolder.map((list) => (
           <tr
             className={"text-gray-700 "}
             key={Math.random()}
@@ -91,7 +200,7 @@ const FileListTable = (props) => {
             </td>
           </tr>
         ))}
-        {fileList.map((list) => (
+        {initFile.map((list) => (
           <tr
             className={
               "text-gray-700 " + (list.isClicked ? "file-clicked" : "")
@@ -142,4 +251,4 @@ const FileListTable = (props) => {
   );
 };
 
-export default FileListTable;
+export default FolderListTable;
