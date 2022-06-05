@@ -44,6 +44,15 @@ const fileSlice = createSlice({
     resetTotalFile(state, action) {
       state.totalFile = action.payload;
     },
+    addTag(state, action) {
+      console.log(action.payload.file_id);
+      state.file.map((list) => {
+        if (list.file_id === action.payload.file_id) {
+          list.tag = action.payload.tag;
+        }
+      });
+      console.log(state.file);
+    },
   },
 });
 

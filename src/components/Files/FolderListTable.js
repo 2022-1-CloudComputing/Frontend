@@ -106,6 +106,7 @@ const FolderListTable = (props) => {
           name: list.name.substr(0, list.name.length - 1),
           user_id: list.user_id,
           parent_id: list.parent_id,
+          folder_id: list.folder_id,
           created_at: dateCheck(),
         };
 
@@ -125,7 +126,7 @@ const FolderListTable = (props) => {
     getFile();
     getBookmark();
     getFolder();
-  }, []);
+  }, [folderID]);
 
   const clickHandler = (fileId) => {
     dispatch(fileActions.fileClicked(fileId));
@@ -169,9 +170,9 @@ const FolderListTable = (props) => {
           <tr
             className={"text-gray-700 "}
             key={Math.random()}
-            onDoubleClick={() =>
-              navigate(`/${userID}/folder/${list.folder_id}/${list.name}`)
-            }
+            onDoubleClick={() => {
+              navigate(`/${userID}/folder/${list.folder_id}/${list.name}`);
+            }}
           >
             <td className="px-4 py-3">
               <div className="flex items-center text-sm">

@@ -3,25 +3,24 @@ import { Link } from "react-router-dom";
 import { FaHome, FaUsers, FaBookmark } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 
-const userId = window.sessionStorage.getItem("Id");
-
-const sideBarData = [
-  { id: "side1", name: "My Box", path: `/${userId}/file`, icon: <FaHome /> },
-  {
-    id: "side3",
-    name: "Bookmark",
-    path: `/${userId}/favorites`,
-    icon: <FaBookmark />,
-  },
-  {
-    id: "side2",
-    name: "Share Box",
-    path: `/${userId}/share`,
-    icon: <FaUsers />,
-  },
-];
-
 const Sidebar = (props) => {
+  const userId = window.sessionStorage.getItem("Id");
+
+  const sideBarData = [
+    { id: "side1", name: "My Box", path: `/${userId}/file`, icon: <FaHome /> },
+    {
+      id: "side3",
+      name: "Bookmark",
+      path: `/${userId}/favorites`,
+      icon: <FaBookmark />,
+    },
+    {
+      id: "side2",
+      name: "Share Box",
+      path: `/${userId}/share`,
+      icon: <FaUsers />,
+    },
+  ];
   const router = useLocation();
 
   return (

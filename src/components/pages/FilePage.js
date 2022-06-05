@@ -56,21 +56,27 @@ const FilePage = () => {
   useEffect(() => {
     async function getFile() {
       const res = await axios.get(`/user/${userID}`);
+      // console.log(tagRes.data);
       console.log(res);
       const tempFileList = res.data.file_list;
       dispatch(fileActions.resetFile([]));
       dispatch(fileActions.resetTotalFile([]));
 
       // console.log(initFile);
-      console.log(tempFileList);
-      tempFileList.map((list) => {
+      // console.log(tempFileList);
+      tempFileList.map(async (list) => {
+        const tagRes = await axios.get(
+          `/user/${userID}/search/tag/${list.file_id}`
+        );
         if (list.folder_id === 1) {
+          // console.log(tagRes.data.length ? tagRes.data : "No");
           const getFileBox = {
             file_id: list.file_id,
             title: list.title,
             user: userID,
             created_at: list.created_at.substr(0, 10),
             file_size: fileSizeCheck(list.file_size),
+            tag: tagRes.data.length ? tagRes.data[0].name : "",
           };
 
           dispatch(fileActions.addFile(getFileBox));
@@ -83,6 +89,7 @@ const FilePage = () => {
             user: userID,
             created_at: list.created_at.substr(0, 10),
             file_size: fileSizeCheck(list.file_size),
+            tag: tagRes.data.length ? tagRes.data[0].name : "",
           })
         );
       });

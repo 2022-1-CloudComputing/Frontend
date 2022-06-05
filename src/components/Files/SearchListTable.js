@@ -38,7 +38,7 @@ const SearchListTable = (props) => {
   };
 
   return (
-    <table>
+    <table className="w-full whitespace-no-wrap">
       <thead>
         <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b  bg-gray-50 ">
           <th className="px-4 py-3 text-center">이름</th>
@@ -47,7 +47,7 @@ const SearchListTable = (props) => {
           <th className="px-4 py-3 text-center">파일크기</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody className="bg-white divide-y ">
         {fileList.map(
           (list) =>
             list.title.includes(searchText) && (

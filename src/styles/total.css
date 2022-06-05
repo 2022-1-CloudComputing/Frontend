@@ -355,6 +355,7 @@
   text-align: center;
   position: absolute;
   width: 100vw;
+  margin-left: calc(-50vw + 50%);
   background: rgba(146, 146, 146, 0.373) !important;
   height: 100%;
 }
@@ -398,4 +399,95 @@
 
 .modal-on {
   display: none;
+}
+
+.filename-tag {
+  width: 100%;
+}
+
+.filename {
+  float: left;
+}
+
+.tag {
+  width: 100%;
+  float: right;
+  height: 14px;
+}
+
+.tagbox {
+  width: 100%;
+  height: 100%;
+}
+
+.tag-icon {
+  float: left;
+  width: 5%;
+  margin-left: 5px;
+  color: rgba(165, 154, 154, 0.729);
+}
+
+.tagname {
+  float: right;
+  width: 87%;
+  color: rgba(165, 154, 154, 0.729);
+  font-size: 12px;
+  margin-top: -3px;
+}
+
+.tag-container {
+  text-align: center;
+  position: absolute;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+
+  height: 100%;
+}
+
+.create-tag-modal {
+  display: inline-block;
+  width: 300px;
+  height: 200px;
+  background: white;
+  margin-top: 25vh;
+  margin-right: 400px;
+  border-radius: 10px;
+  outline: 1px solid #63b3ed;
+  box-shadow: 1px 1px 1px 1px #41403e;
+}
+
+.tag-input-box {
+  width: 100%;
+  height: 100%;
+}
+
+.tag-input-box p {
+  font-family: "Do Hyeon";
+  font-size: 35px;
+  float: left;
+  margin-top: 15px;
+  margin-left: 20px;
+}
+
+.tag-input {
+  outline: 2px solid #5d80ff;
+  border-radius: 3px;
+  height: 30px;
+  width: 85%;
+  margin-top: 18px;
+}
+
+.tag-create-btn {
+  float: right;
+  margin-right: 20px;
+  margin-top: 40px;
+  color: #5d80ff;
+}
+
+.tag-delete h1 {
+  display: flex;
+  width: 100%;
+  font-size: 23px;
+  padding-top: 15px;
+  padding-left: 30px;
 }
