@@ -349,3 +349,17 @@ td[type="right"] {
   border: 3px;
   border-color: rgba(0, 0, 0, 0.08);
 }
+
+input[value="DropOut"] {
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  background: #dd3021;
+  border: 1px solid #dd3021;
+  color: #fff;
+  padding: 10px 20px;
+}
+
+input[value="DropOut"]:hover {
+  background: #ff7777;
+}

@@ -1,11 +1,29 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../../styles/total.css';
+import axios from 'axios';
+import settings from '../../settings.json';
 
 const ProfilePage = () => {
     const id = window.sessionStorage.getItem("Id");
     const name = window.sessionStorage.getItem("Name");
     const email = window.sessionStorage.getItem("Email");
+
+    const dropoutButtonHandler = () => {
+        axios.post(settings.DropoutIP, {
+            "id": id,
+            "name": name,
+            "email": email
+        })
+        .then((res) => {
+            console.log(res);
+            console.log("Drop Out!");
+            
+            window.sessionStorage.clear();
+
+            document.location.href = '/';
+        });
+    }
 
     return (
         <div>
@@ -35,6 +53,7 @@ const ProfilePage = () => {
                             </tr>
                         </table>
 
+                        <input type='submit' value="DropOut" onClick={dropoutButtonHandler} />
                     </div>
                 </div>
             </div>

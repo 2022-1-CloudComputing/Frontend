@@ -1,8 +1,12 @@
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
+import axios from 'axios';
+import settings from '../../settings.json';
 
 const UserMenu = (props) => {
   const outSection = useRef();
+
+  const accessToken = window.sessionStorage.getItem("AccessToken");
 
   const outClickHandler = (e) => {
     console.log("clicked!");
@@ -11,8 +15,17 @@ const UserMenu = (props) => {
   };
 
   const logoutHandler = (e) => {
-    console.log("Log Out!");
-    window.sessionStorage.clear();
+    axios.post(settings.LogoutIP, {
+      headers: {
+        "Authorization": `Bearer ${accessToken}`
+      }
+    })
+    .then((res) => {
+      console.log(res);
+      console.log("Log Out!");
+      
+      window.sessionStorage.clear();
+    });
   };
 
   return (
