@@ -10,6 +10,7 @@ import {
   FaTags,
   FaSortAmountUpAlt,
   FaSortAmountDown,
+  FaDownload,
 } from "react-icons/fa";
 import axios from "axios";
 
@@ -29,7 +30,18 @@ const FileListTable = (props) => {
   const fileList = useSelector((state) => state.file.file);
   const folderList = useSelector((state) => state.folder.folder);
   const bookmarkId = useSelector((state) => state.bookmark.file_id);
-  // console.log(bookmarkId);
+
+  const IdToken = window.sessionStorage.getItem("IdToken");
+  const AccessKeyId = window.sessionStorage.getItem("AccessKeyId");
+  const SecretKey = window.sessionStorage.getItem("SecretKey");
+  const SessionToken = window.sessionStorage.getItem("SessionToken");
+  const headers = {
+    "Content-Type": "multipart/form-data",
+    IdToken: IdToken,
+    AccessKeyId: AccessKeyId,
+    SecretKey: SecretKey,
+    SessionToken: SessionToken,
+  };
 
   const dispatch = useDispatch();
 
@@ -60,6 +72,15 @@ const FileListTable = (props) => {
       dispatch(fileActions.ascendingDateFile());
       dispatch(folderActions.ascendingDateFolder());
     }
+  };
+
+  const downloadClickHandler = async (fileId) => {
+    await axios
+      .get(`/user/${userID}/file/${fileId}`, {
+        headers: headers,
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
 
   const tagClickHandler = async (fileId) => {
@@ -186,6 +207,16 @@ const FileListTable = (props) => {
                   </button>
                 </div>
               </td>
+              <td className="td-user-date">
+                <div>
+                  <button
+                    onClick={() => tagClickHandler(list.file_id)}
+                    className="tag-icon"
+                  >
+                    -
+                  </button>
+                </div>
+              </td>
             </tr>
           ))}
           {fileList.map((list) => (
@@ -243,6 +274,16 @@ const FileListTable = (props) => {
                     {"   "}
 
                     {list.tag}
+                  </button>
+                </div>
+              </td>
+              <td className="td-user-date">
+                <div>
+                  <button
+                    onClick={() => downloadClickHandler(list.file_id)}
+                    className="tag-icon"
+                  >
+                    <FaDownload />
                   </button>
                 </div>
               </td>

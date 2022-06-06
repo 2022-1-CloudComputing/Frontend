@@ -1,13 +1,67 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FaBookmark, FaRegBookmark } from "react-icons/fa";
-import { bookmarkActions, fileActions } from "../../store";
+import {
+  FaBookmark,
+  FaDownload,
+  FaRegBookmark,
+  FaSortAmountDown,
+  FaSortAmountUpAlt,
+} from "react-icons/fa";
+import { bookmarkActions, fileActions, folderActions } from "../../store";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const SearchListTable = (props) => {
   const fileList = useSelector((state) => state.file.totalFile);
   const bookmarkId = useSelector((state) => state.bookmark.file_id);
+
+  const [isSorted, setIsSorted] = useState(true);
+  const [dateSorted, setDateSorted] = useState(true);
+
+  const IdToken = window.sessionStorage.getItem("IdToken");
+  const AccessKeyId = window.sessionStorage.getItem("AccessKeyId");
+  const SecretKey = window.sessionStorage.getItem("SecretKey");
+  const SessionToken = window.sessionStorage.getItem("SessionToken");
+  const headers = {
+    "Content-Type": "multipart/form-data",
+    IdToken: IdToken,
+    AccessKeyId: AccessKeyId,
+    SecretKey: SecretKey,
+    SessionToken: SessionToken,
+  };
+  const sortIconClickHandler = () => {
+    setIsSorted(!isSorted);
+    setDateSorted(true);
+
+    if (isSorted) {
+      dispatch(fileActions.descendingFile());
+      dispatch(folderActions.descendingFolder());
+    } else {
+      dispatch(fileActions.ascendingFile());
+      dispatch(folderActions.ascendingFolder());
+    }
+  };
+
+  const downloadClickHandler = async (fileId) => {
+    await axios
+      .get(`/user/${userID}/file/${fileId}`, {
+        headers: headers,
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
+
+  const dateIconClickHandler = () => {
+    setDateSorted(!dateSorted);
+    setIsSorted(true);
+    if (dateSorted) {
+      dispatch(fileActions.descendingDateFile());
+      dispatch(folderActions.descendingDateFolder());
+    } else {
+      dispatch(fileActions.ascendingDateFile());
+      dispatch(folderActions.ascendingDateFolder());
+    }
+  };
 
   const dispatch = useDispatch();
 
@@ -41,9 +95,37 @@ const SearchListTable = (props) => {
     <table className="listtable">
       <thead>
         <tr>
-          <th>이름</th>
+          <th>
+            이름{"   "}
+            {"      "}
+            {isSorted ? (
+              <FaSortAmountUpAlt
+                className="sortIcon"
+                onClick={sortIconClickHandler}
+              />
+            ) : (
+              <FaSortAmountDown
+                className="sortIcon"
+                onClick={sortIconClickHandler}
+              />
+            )}
+          </th>
           <th>유저</th>
-          <th>업로드</th>
+          <th>
+            업로드
+            {"      "}
+            {dateSorted ? (
+              <FaSortAmountUpAlt
+                className="sortIcon"
+                onClick={dateIconClickHandler}
+              />
+            ) : (
+              <FaSortAmountDown
+                className="sortIcon"
+                onClick={dateIconClickHandler}
+              />
+            )}
+          </th>
           <th>파일크기</th>
         </tr>
       </thead>
@@ -89,6 +171,16 @@ const SearchListTable = (props) => {
                 <td className="td-user-date">{list.user}</td>
                 <td className="td-user-date">{list.created_at}</td>
                 <td className="td-user-date">{list.file_size}</td>
+                <td className="td-user-date">
+                  <div>
+                    <button
+                      onClick={() => downloadClickHandler(list.file_id)}
+                      className="tag-icon"
+                    >
+                      <FaDownload />
+                    </button>
+                  </div>
+                </td>
               </tr>
             )
         )}

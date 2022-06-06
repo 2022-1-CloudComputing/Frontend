@@ -2,7 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { fileActions, bookmarkActions, folderActions } from "../../store";
-import { FaBookmark, FaRegBookmark, FaTrash, FaFolder } from "react-icons/fa";
+import {
+  FaBookmark,
+  FaRegBookmark,
+  FaTrash,
+  FaFolder,
+  FaSortAmountUpAlt,
+  FaSortAmountDown,
+  FaDownload,
+} from "react-icons/fa";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
@@ -13,6 +21,9 @@ const FolderListTable = (props) => {
 
   const [nextFileList, setNextFileList] = useState([]);
   const [nextFolderList, setNextFolderList] = useState([]);
+
+  const [isSorted, setIsSorted] = useState(true);
+  const [dateSorted, setDateSorted] = useState(true);
 
   const bookmarkId = useSelector((state) => state.bookmark.file_id);
 
@@ -33,6 +44,15 @@ const FolderListTable = (props) => {
   };
 
   const folderID = params.folderId;
+
+  const downloadClickHandler = async (fileId) => {
+    await axios
+      .get(`/user/${userID}/file/${fileId}`, {
+        headers: headers,
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
 
   const fileSizeCheck = (tempSize) => {
     if (tempSize >= 1000000) {
@@ -62,6 +82,31 @@ const FolderListTable = (props) => {
     const date = dayCheck(now.getDate());
 
     return year + "-" + month + "-" + date;
+  };
+
+  const sortIconClickHandler = () => {
+    setIsSorted(!isSorted);
+    setDateSorted(true);
+
+    if (isSorted) {
+      dispatch(fileActions.descendingFile());
+      dispatch(folderActions.descendingFolder());
+    } else {
+      dispatch(fileActions.ascendingFile());
+      dispatch(folderActions.ascendingFolder());
+    }
+  };
+
+  const dateIconClickHandler = () => {
+    setDateSorted(!dateSorted);
+    setIsSorted(true);
+    if (dateSorted) {
+      dispatch(fileActions.descendingDateFile());
+      dispatch(folderActions.descendingDateFolder());
+    } else {
+      dispatch(fileActions.ascendingDateFile());
+      dispatch(folderActions.ascendingDateFolder());
+    }
   };
 
   useEffect(() => {
@@ -154,9 +199,37 @@ const FolderListTable = (props) => {
     <table className="listtable">
       <thead>
         <tr>
-          <th>이름</th>
+          <th>
+            이름{"   "}
+            {"      "}
+            {isSorted ? (
+              <FaSortAmountUpAlt
+                className="sortIcon"
+                onClick={sortIconClickHandler}
+              />
+            ) : (
+              <FaSortAmountDown
+                className="sortIcon"
+                onClick={sortIconClickHandler}
+              />
+            )}
+          </th>
           <th>유저</th>
-          <th>업로드</th>
+          <th>
+            업로드
+            {"      "}
+            {dateSorted ? (
+              <FaSortAmountUpAlt
+                className="sortIcon"
+                onClick={dateIconClickHandler}
+              />
+            ) : (
+              <FaSortAmountDown
+                className="sortIcon"
+                onClick={dateIconClickHandler}
+              />
+            )}
+          </th>
           <th>파일크기</th>
         </tr>
       </thead>
@@ -189,6 +262,11 @@ const FolderListTable = (props) => {
               >
                 <FaTrash />
               </button>
+            </td>
+            <td className="td-user-date">
+              <div>
+                <button className="tag-icon">-</button>
+              </div>
             </td>
           </tr>
         ))}
@@ -235,6 +313,16 @@ const FolderListTable = (props) => {
               >
                 <FaTrash />
               </button>
+            </td>
+            <td className="td-user-date">
+              <div>
+                <button
+                  onClick={() => downloadClickHandler(list.file_id)}
+                  className="tag-icon"
+                >
+                  <FaDownload />
+                </button>
+              </div>
             </td>
           </tr>
         ))}
