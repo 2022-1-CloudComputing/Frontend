@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { fileActions, bookmarkActions, clickedActions } from "../../store";
+import { useNavigate } from "react-router-dom";
+import { fileActions, bookmarkActions, folderActions } from "../../store";
 import {
   FaBookmark,
   FaRegBookmark,
   FaTrash,
   FaFolder,
   FaTags,
+  FaSortAmountUpAlt,
+  FaSortAmountDown,
 } from "react-icons/fa";
 import axios from "axios";
+
 import { useParams } from "react-router-dom";
 import TagCreate from "../Layout/TagCreate";
 
@@ -19,8 +22,9 @@ const FileListTable = (props) => {
   const navigate = useNavigate();
   const [showTagCreate, setShowTagCreate] = useState(false);
   const [tagFileId, setTagFileId] = useState(0);
-  const [fileTagName, setFileTagName] = useState("");
   const [isTagged, setIsTagged] = useState(false);
+  const [isSorted, setIsSorted] = useState(true);
+  const [dateSorted, setDateSorted] = useState(true);
 
   const fileList = useSelector((state) => state.file.file);
   const folderList = useSelector((state) => state.folder.folder);
@@ -31,6 +35,31 @@ const FileListTable = (props) => {
 
   const clickHandler = (fileId) => {
     dispatch(fileActions.fileClicked(fileId));
+  };
+
+  const sortIconClickHandler = () => {
+    setIsSorted(!isSorted);
+    setDateSorted(true);
+
+    if (isSorted) {
+      dispatch(fileActions.descendingFile());
+      dispatch(folderActions.descendingFolder());
+    } else {
+      dispatch(fileActions.ascendingFile());
+      dispatch(folderActions.ascendingFolder());
+    }
+  };
+
+  const dateIconClickHandler = () => {
+    setDateSorted(!dateSorted);
+    setIsSorted(true);
+    if (dateSorted) {
+      dispatch(fileActions.descendingDateFile());
+      dispatch(folderActions.descendingDateFolder());
+    } else {
+      dispatch(fileActions.ascendingDateFile());
+      dispatch(folderActions.ascendingDateFolder());
+    }
   };
 
   const tagClickHandler = async (fileId) => {
@@ -78,55 +107,77 @@ const FileListTable = (props) => {
           setShowTagCreate={setShowTagCreate}
         />
       )}
-      <table className="w-full whitespace-no-wrap">
+
+      <table className="listtable">
         <thead>
-          <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b  bg-gray-50 ">
-            <th className="px-4 py-3 text-center">이름</th>
-            <th className="px-4 py-3 text-center">유저</th>
-            <th className="px-4 py-3 text-center">업로드</th>
-            <th className="px-4 py-3 text-center">파일크기</th>
-            <th className="px-4 py-3 text-center">삭제</th>
-            <th className="px-4 py-3 text-center">태그</th>
+          <tr>
+            <th>
+              이름{"   "}
+              {"      "}
+              {isSorted ? (
+                <FaSortAmountUpAlt
+                  className="sortIcon"
+                  onClick={sortIconClickHandler}
+                />
+              ) : (
+                <FaSortAmountDown
+                  className="sortIcon"
+                  onClick={sortIconClickHandler}
+                />
+              )}
+            </th>
+            <th>유저</th>
+            <th>
+              업로드
+              {"      "}
+              {dateSorted ? (
+                <FaSortAmountUpAlt
+                  className="sortIcon"
+                  onClick={dateIconClickHandler}
+                />
+              ) : (
+                <FaSortAmountDown
+                  className="sortIcon"
+                  onClick={dateIconClickHandler}
+                />
+              )}
+            </th>
+            <th>파일크기</th>
+            <th>삭제</th>
+            <th>태그</th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y ">
+        <tbody>
           {folderList.map((list) => (
             <tr
-              className={"text-gray-700 "}
               key={Math.random()}
               onDoubleClick={() =>
                 navigate(`/${userID}/folder/${list.folder_id}/${list.name}`)
               }
             >
-              <td className="px-4 py-3">
-                <div className="flex items-center text-sm">
-                  <div className="relatevie hidden w-8 mr-3 rounded-full md:block">
-                    <span>
-                      <div>
-                        <FaFolder />
-                      </div>
-                    </span>
-                  </div>
-                  <div>
-                    <p className="font-semibold">{list.name}</p>
-                  </div>
+              <td className="td-div">
+                <div className="td-div-div">
+                  <span>
+                    <div>
+                      <FaFolder />
+                    </div>
+                  </span>
                 </div>
+                <p>{list.name}</p>
               </td>
-              <td className="px-4 py-3 text-sm text-center">{list.user}</td>
-              <td className="px-4 py-3 text-sm text-center">
-                {list.created_at}
-              </td>
-              <td className="px-4 py-3 text-sm text-center">-</td>
-              <td className="px-4 py-3 text-center">
+              <td className="td-user-date">{list.user}</td>
+              <td className="td-user-date">{list.created_at}</td>
+              <td className="td-user-date">-</td>
+              <td className="td-user-date">
                 <button
                   onClick={() => deleteClickHandler(list)}
-                  className="text-sm btn-color rounded-lg  "
+                  className="btn-color"
                 >
                   <FaTrash />
                 </button>
               </td>
-              <td className="px-4 py-3 text-sm text-center">
-                <div className="tag">
+              <td className="td-user-date">
+                <div>
                   <button
                     className="tag-icon"
                     onClick={() => tagClickHandler(list.file_id)}
@@ -139,15 +190,13 @@ const FileListTable = (props) => {
           ))}
           {fileList.map((list) => (
             <tr
-              className={
-                "text-gray-700 " + (list.isClicked ? "file-clicked" : "")
-              }
+              className={list.isClicked ? "file-clicked" : ""}
               key={Math.random()}
               onClick={() => clickHandler(list.file_id)}
             >
-              <td className="px-4 py-3">
-                <div className="flex items-center text-sm">
-                  <div className="relatevie hidden w-8 mr-3 rounded-full md:block bookmark-color">
+              <td>
+                <div className="td-div">
+                  <div className="td-div-div bookmark-color">
                     <span>
                       {bookmarkId.indexOf(list.file_id) !== -1 ? (
                         <div
@@ -167,39 +216,34 @@ const FileListTable = (props) => {
                       )}
                     </span>
                   </div>
-                  <div className="filename-tag">
-                    <p className="font-semibold">{list.title}</p>
-                  </div>
+
+                  <p>{list.title}</p>
                 </div>
               </td>
-              <td className="px-4 py-3 text-sm text-center">{list.user}</td>
-              <td className="px-4 py-3 text-sm text-center">
-                {list.created_at}
-              </td>
-              <td className="px-4 py-3 text-sm text-center">
-                {list.file_size}
-              </td>
-              <td className="px-4 py-3 text-center">
+              <td className="td-user-date">{list.user}</td>
+              <td className="td-user-date">{list.created_at}</td>
+              <td className="td-user-date">{list.file_size}</td>
+              <td className="td-user-date">
                 <button
                   onClick={() => deleteClickHandler(list)}
-                  className="text-sm btn-color rounded-lg  "
+                  className="btn-color"
                 >
                   <div>
                     <FaTrash />
                   </div>
                 </button>
               </td>
-              <td className="px-4 py-3 text-sm text-center">
-                <div className="tag">
+              <td className="td-user-date">
+                <div>
                   <button
-                    className="tag-icon"
                     onClick={() => tagClickHandler(list.file_id)}
+                    className="tag-icon"
                   >
                     <FaTags />
+                    {"   "}
+
+                    {list.tag}
                   </button>
-                  <div className="tagname">
-                    <p>{list.tag}</p>
-                  </div>
                 </div>
               </td>
             </tr>

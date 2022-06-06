@@ -24,6 +24,54 @@ const fileSlice = createSlice({
   reducers: {
     addFile(state, action) {
       state.file = [...state.file, action.payload];
+      state.file.sort((a, b) => {
+        const x = a.title.toLowerCase();
+        const y = b.title.toLowerCase();
+
+        if (x < y) return -1;
+        if (x > y) return 1;
+        return 0;
+      });
+    },
+    ascendingFile(state) {
+      state.file.sort((a, b) => {
+        const x = a.title.toLowerCase();
+        const y = b.title.toLowerCase();
+
+        if (x < y) return -1;
+        if (x > y) return 1;
+        return 0;
+      });
+    },
+    descendingFile(state) {
+      state.file.sort((a, b) => {
+        const x = a.title.toLowerCase();
+        const y = b.title.toLowerCase();
+
+        if (x < y) return 1;
+        if (x > y) return -1;
+        return 0;
+      });
+    },
+    ascendingDateFile(state) {
+      state.file.sort((a, b) => {
+        const x = a.created_at.toLowerCase();
+        const y = b.created_at.toLowerCase();
+
+        if (x < y) return -1;
+        if (x > y) return 1;
+        return 0;
+      });
+    },
+    descendingDateFile(state) {
+      state.file.sort((a, b) => {
+        const x = a.created_at.toLowerCase();
+        const y = b.created_at.toLowerCase();
+
+        if (x < y) return 1;
+        if (x > y) return -1;
+        return 0;
+      });
     },
     addTotalFile(state, action) {
       state.totalFile = [...state.totalFile, action.payload];
@@ -91,9 +139,57 @@ const folderSlice = createSlice({
   reducers: {
     addFolder(state, action) {
       state.folder = [...state.folder, action.payload];
+      state.folder.sort((a, b) => {
+        const x = a.name.toLowerCase();
+        const y = b.name.toLowerCase();
+
+        if (x < y) return -1;
+        if (x > y) return 1;
+        return 0;
+      });
     },
     resetFolder(state, action) {
       state.folder = action.payload;
+    },
+    ascendingFolder(state) {
+      state.folder.sort((a, b) => {
+        const x = a.name.toLowerCase();
+        const y = b.name.toLowerCase();
+
+        if (x < y) return -1;
+        if (x > y) return 1;
+        return 0;
+      });
+    },
+    descendingFolder(state) {
+      state.folder.sort((a, b) => {
+        const x = a.name.toLowerCase();
+        const y = b.name.toLowerCase();
+
+        if (x < y) return 1;
+        if (x > y) return -1;
+        return 0;
+      });
+    },
+    ascendingDateFolder(state) {
+      state.folder.sort((a, b) => {
+        const x = a.created_at.toLowerCase();
+        const y = b.created_at.toLowerCase();
+
+        if (x < y) return -1;
+        if (x > y) return 1;
+        return 0;
+      });
+    },
+    descendingDateFolder(state) {
+      state.folder.sort((a, b) => {
+        const x = a.created_at.toLowerCase();
+        const y = b.created_at.toLowerCase();
+
+        if (x < y) return 1;
+        if (x > y) return -1;
+        return 0;
+      });
     },
   },
 });

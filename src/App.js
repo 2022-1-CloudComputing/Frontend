@@ -1,9 +1,8 @@
-import "./App.css";
 import FilePage from "./components/pages/FilePage";
 import { Route, Routes } from "react-router-dom";
 import HomePage from "./components/pages/HomePage";
 import FavoritesPage from "./components/pages/FavoritesPage";
-import SharePage from "./components/pages/SharePage";
+
 import LoginPage from "./components/pages/LoginPage";
 import RegisterPage from "./components/pages/RegisterPage";
 import ProfilePage from "./components/pages/ProfilePage";
@@ -17,7 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/:userId/file" element={<FilePage />} />
-        <Route path="/:userId/share" element={<SharePage />} />
+
         <Route path="/login" element={<LoginPage />} />
         <Route path="/:userId/favorites" element={<FavoritesPage />} />
         <Route path="/register" element={<RegisterPage />} />
@@ -26,8 +25,8 @@ function App() {
           path="/:userId/folder/:folderId/:folderName"
           element={<FolderPage />}
         />
-        <Route path="/search/:searchtext" element={<SearchPage />} />
-        <Route path="/search/tag/:tag" element={<TagSearchPage />} />
+        <Route path="/:userId/search/:searchtext" element={<SearchPage />} />
+        <Route path="/:userId/search/tag/:tag" element={<TagSearchPage />} />
       </Routes>
     </div>
   );

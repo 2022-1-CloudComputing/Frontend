@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaHome, FaUsers, FaBookmark } from "react-icons/fa";
+import { FaHome, FaBookmark } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 
 const Sidebar = (props) => {
@@ -14,41 +14,30 @@ const Sidebar = (props) => {
       path: `/${userId}/favorites`,
       icon: <FaBookmark />,
     },
-    {
-      id: "side2",
-      name: "Share Box",
-      path: `/${userId}/share`,
-      icon: <FaUsers />,
-    },
   ];
   const router = useLocation();
 
   return (
-    <aside
-      className={
-        "z-20 flex-shrink-0 hidden w-64 overflow-y-auto md:block " +
-        (!props.modalOn && "bg-white")
-      }
-    >
-      <div className="py-4 text-gray-500 ">
-        <a className="title-size font-bold text-gray-800 title-center">OU</a>
-        <ul className="mt-6">
+    <aside className={"sidebar-aside " + (!props.modalOn && "sidebar-white")}>
+      <div className="sidebar-content">
+        <a className="title-size sidebar-logo title-center">OU</a>
+        <ul className="sidebar-ul">
           {sideBarData.map((side) => (
-            <li key={side.id} className="relative px-6 py-3">
+            <li key={side.id} className="sidebar-li">
               {side.path === router.pathname ? (
-                <span className="absolute inset-y-0 left-0 w-1 side-selected rounded-tr-lg rounded-br-lg"></span>
+                <span className="sidebar-span side-selected "></span>
               ) : (
                 ""
               )}
 
               <div
                 className={
-                  "inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 " +
+                  "sidebar-div " +
                   (side.path === router.pathname ? "text-gray-800" : "")
                 }
               >
                 <svg
-                  className="w-6 h-6"
+                  className="sidebar-icon"
                   aria-hidden="true"
                   fill="none"
                   strokeLinecap="round"
@@ -60,12 +49,17 @@ const Sidebar = (props) => {
                   {side.icon}
                 </svg>
                 <Link to={side.path}>
-                  <span
-                    className="ml-4"
+                  <div
+                    className={
+                      side.path === router.pathname
+                        ? "text-gray-800 sidebar-name"
+                        : "sidebar-name"
+                    }
+                    style={{ marginLeft: "1rem" }}
                     // onClick={() => sideClickHandler('myBox')}
                   >
                     {side.name}
-                  </span>
+                  </div>
                 </Link>
               </div>
             </li>

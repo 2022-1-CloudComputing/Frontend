@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { bookmarkActions, fileActions, folderActions } from "../../store";
 import axios from "axios";
@@ -13,8 +13,6 @@ import FileInput from "../Files/FileInput";
 import FileListTable from "../Files/FileListTable";
 
 const FilePage = () => {
-  const initFile = useSelector((state) => state.file.file);
-  const initFolder = useSelector((state) => state.folder.folder);
   const [modalOn, setmodalOn] = useState(false);
 
   const dispatch = useDispatch();
@@ -56,20 +54,17 @@ const FilePage = () => {
   useEffect(() => {
     async function getFile() {
       const res = await axios.get(`/user/${userID}`);
-      // console.log(tagRes.data);
+
       console.log(res);
       const tempFileList = res.data.file_list;
       dispatch(fileActions.resetFile([]));
       dispatch(fileActions.resetTotalFile([]));
 
-      // console.log(initFile);
-      // console.log(tempFileList);
       tempFileList.map(async (list) => {
         const tagRes = await axios.get(
           `/user/${userID}/search/tag/${list.file_id}`
         );
         if (list.folder_id === 1) {
-          // console.log(tagRes.data.length ? tagRes.data : "No");
           const getFileBox = {
             file_id: list.file_id,
             title: list.title,

@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaBookmark, FaRegBookmark, FaTags } from "react-icons/fa";
 import { bookmarkActions, fileActions } from "../../store";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import TagCreate from "../Layout/TagCreate";
 
 const TagSearchListTable = (props) => {
   const fileList = useSelector((state) => state.file.totalFile);
   const bookmarkId = useSelector((state) => state.bookmark.file_id);
+
+  const [showTagCreate, setShowTagCreate] = useState(false);
+  const [tagFileId, setTagFileId] = useState(0);
+  const [isTagged, setIsTagged] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -17,6 +22,19 @@ const TagSearchListTable = (props) => {
 
   const clickHandler = (fileId) => {
     dispatch(fileActions.fileClicked(fileId));
+  };
+
+  const tagClickHandler = async (fileId) => {
+    setShowTagCreate(true);
+    // console.log(fileId);
+    setTagFileId(fileId);
+    const tagRes = await axios.get(`/user/${userID}/search/tag/${fileId}`);
+
+    if (tagRes.data.length === 1) {
+      setIsTagged(true);
+    } else {
+      setIsTagged(false);
+    }
   };
 
   const addBookmarkClickHandler = async (fileId) => {
@@ -38,77 +56,84 @@ const TagSearchListTable = (props) => {
   };
 
   return (
-    <table className="w-full whitespace-no-wrap">
-      <thead>
-        <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b  bg-gray-50 ">
-          <th className="px-4 py-3 text-center">이름</th>
-          <th className="px-4 py-3 text-center">유저</th>
-          <th className="px-4 py-3 text-center">업로드</th>
-          <th className="px-4 py-3 text-center">파일크기</th>
-        </tr>
-      </thead>
-      <tbody className="bg-white divide-y ">
-        {fileList.map(
-          (list) =>
-            list.tag.includes(tagText) && (
-              <tr
-                className={
-                  "text-gray-700 " + (list.isClicked ? "file-clicked" : "")
-                }
-                key={Math.random()}
-                onClick={() => clickHandler(list.file_id)}
-              >
-                <td className="px-4 py-3">
-                  <div className="flex items-center text-sm">
-                    <div className="relatevie hidden w-8 mr-3 rounded-full md:block bookmark-color">
-                      <span>
-                        {bookmarkId.indexOf(list.file_id) !== -1 ? (
-                          <div
-                            className="onBookmark"
-                            onClick={() =>
-                              deleteBookmarkClickHandler(list.file_id)
-                            }
-                          >
-                            <FaBookmark />
-                          </div>
-                        ) : (
-                          <div
-                            onClick={() =>
-                              addBookmarkClickHandler(list.file_id)
-                            }
-                          >
-                            <FaRegBookmark />
-                          </div>
-                        )}
-                      </span>
+    <div>
+      {showTagCreate && (
+        <TagCreate
+          isTagged={isTagged}
+          tagFileId={tagFileId}
+          setShowTagCreate={setShowTagCreate}
+        />
+      )}
+      <table className="listtable">
+        <thead>
+          <tr>
+            <th>이름</th>
+            <th>유저</th>
+            <th>업로드</th>
+            <th>파일크기</th>
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y ">
+          {fileList.map(
+            (list) =>
+              list.tag.includes(tagText) && (
+                <tr
+                  className={
+                    "text-gray-700 " + (list.isClicked ? "file-clicked" : "")
+                  }
+                  key={Math.random()}
+                  onClick={() => clickHandler(list.file_id)}
+                >
+                  <td>
+                    <div className="td-div">
+                      <div className="td-div-div bookmark-color">
+                        <span>
+                          {bookmarkId.indexOf(list.file_id) !== -1 ? (
+                            <div
+                              className="onBookmark"
+                              onClick={() =>
+                                deleteBookmarkClickHandler(list.file_id)
+                              }
+                            >
+                              <FaBookmark />
+                            </div>
+                          ) : (
+                            <div
+                              onClick={() =>
+                                addBookmarkClickHandler(list.file_id)
+                              }
+                            >
+                              <FaRegBookmark />
+                            </div>
+                          )}
+                        </span>
+                      </div>
+
+                      <p>{list.title}</p>
                     </div>
+                  </td>
+                  <td className="td-user-date">{list.user}</td>
+                  <td className="td-user-date">{list.created_at}</td>
+                  <td className="td-user-date">{list.file_size}</td>
+                  <td className="td-user-date">
                     <div>
-                      <p className="font-semibold">{list.title}</p>
+                      <button
+                        onClick={() => tagClickHandler(list.file_id)}
+                        className="tag-icon"
+                      >
+                        <FaTags />
+                        {"   "}
+
+                        {list.tag}
+                      </button>
                     </div>
-                  </div>
-                </td>
-                <td className="px-4 py-3 text-sm text-center">{list.user}</td>
-                <td className="px-4 py-3 text-sm text-center">
-                  {list.created_at}
-                </td>
-                <td className="px-4 py-3 text-sm text-center">
-                  {list.file_size}
-                </td>
-                <td className="px-4 py-3 text-sm text-center">
-                  <div className="tag">
-                    <button className="tag-icon">
-                      <FaTags />
-                    </button>
-                    <div className="tagname">
-                      <p>{list.tag}</p>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            )
-        )}
-      </tbody>
-    </table>
+                  </td>
+                </tr>
+              )
+          )}
+        </tbody>
+      </table>
+    </div>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { bookmarkActions, fileActions } from "../../store";
@@ -6,10 +6,8 @@ import axios from "axios";
 import Sidebar from "../Layout/Sidebar";
 import TotalPage from "../Layout/TotalPage";
 import RightPage from "../Layout/RightPage";
-import UploadButton from "../Files/UploadButton";
 import RightContainer from "../Layout/RightContainer";
 import MainContent from "../Layout/MainContent";
-import FileInput from "../Files/FileInput";
 import BookmarkListTable from "../Files/BookmarkListTable";
 
 const FavoritesPage = () => {

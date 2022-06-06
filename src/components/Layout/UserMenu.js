@@ -41,13 +41,6 @@ const UserMenu = (props) => {
             </div>
           </Link>
         </li>
-        <li>
-          <Link to="/group">
-            <div className="modal-menu-style">
-              <span>Group</span>
-            </div>
-          </Link>
-        </li>
         <li onClick={logoutHandler}>
           <Link to="/">
             <div className="modal-menu-style">

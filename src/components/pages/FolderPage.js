@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { bookmarkActions, fileActions, folderActions } from "../../store";
+import { fileActions } from "../../store";
 import axios from "axios";
 import Sidebar from "../Layout/Sidebar";
 import TotalPage from "../Layout/TotalPage";
@@ -10,7 +10,6 @@ import UploadButton from "../Files/UploadButton";
 import RightContainer from "../Layout/RightContainer";
 import MainContent from "../Layout/MainContent";
 import FileInput from "../Files/FileInput";
-import FileListTable from "../Files/FileListTable";
 import FolderListTable from "../Files/FolderListTable";
 
 const FolderPage = () => {
@@ -31,7 +30,6 @@ const FolderPage = () => {
 
   const params = useParams();
   const userID = params.userId;
-  const folderID = params.folderId;
   const folderName = params.folderName;
 
   // const fileList2 = useSelector((state) => state.file.file);

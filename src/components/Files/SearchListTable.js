@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FaBookmark, FaRegBookmark, FaTrash, FaFolder } from "react-icons/fa";
+import { FaBookmark, FaRegBookmark } from "react-icons/fa";
 import { bookmarkActions, fileActions } from "../../store";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -38,16 +38,16 @@ const SearchListTable = (props) => {
   };
 
   return (
-    <table className="w-full whitespace-no-wrap">
+    <table className="listtable">
       <thead>
-        <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b  bg-gray-50 ">
-          <th className="px-4 py-3 text-center">이름</th>
-          <th className="px-4 py-3 text-center">유저</th>
-          <th className="px-4 py-3 text-center">업로드</th>
-          <th className="px-4 py-3 text-center">파일크기</th>
+        <tr>
+          <th>이름</th>
+          <th>유저</th>
+          <th>업로드</th>
+          <th>파일크기</th>
         </tr>
       </thead>
-      <tbody className="bg-white divide-y ">
+      <tbody>
         {fileList.map(
           (list) =>
             list.title.includes(searchText) && (
@@ -58,9 +58,9 @@ const SearchListTable = (props) => {
                 key={Math.random()}
                 onClick={() => clickHandler(list.file_id)}
               >
-                <td className="px-4 py-3">
-                  <div className="flex items-center text-sm">
-                    <div className="relatevie hidden w-8 mr-3 rounded-full md:block bookmark-color">
+                <td>
+                  <div className="td-div">
+                    <div className="td-div-div bookmark-color">
                       <span>
                         {bookmarkId.indexOf(list.file_id) !== -1 ? (
                           <div
@@ -82,18 +82,13 @@ const SearchListTable = (props) => {
                         )}
                       </span>
                     </div>
-                    <div>
-                      <p className="font-semibold">{list.title}</p>
-                    </div>
+
+                    <p>{list.title}</p>
                   </div>
                 </td>
-                <td className="px-4 py-3 text-sm text-center">{list.user}</td>
-                <td className="px-4 py-3 text-sm text-center">
-                  {list.created_at}
-                </td>
-                <td className="px-4 py-3 text-sm text-center">
-                  {list.file_size}
-                </td>
+                <td className="td-user-date">{list.user}</td>
+                <td className="td-user-date">{list.created_at}</td>
+                <td className="td-user-date">{list.file_size}</td>
               </tr>
             )
         )}

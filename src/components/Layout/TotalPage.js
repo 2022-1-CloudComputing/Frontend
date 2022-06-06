@@ -1,11 +1,7 @@
-import React from 'react';
+import React from "react";
 
 const TotalPage = (props) => {
-  return (
-    <div className="flex h-screen bg-gray-50  overflow-hidden">
-      {props.children}
-    </div>
-  );
+  return <div className="totalpage">{props.children}</div>;
 };
 
 export default TotalPage;
