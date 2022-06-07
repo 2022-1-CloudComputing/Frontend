@@ -733,7 +733,7 @@ input[value="DropOut"]:hover {
 .td-div-div {
   overflow: hidden;
   width: 2rem;
-
+  cursor: pointer;
   margin-right: 0.5rem;
 }
 

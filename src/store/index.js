@@ -191,6 +191,13 @@ const folderSlice = createSlice({
         return 0;
       });
     },
+    renameFolder(state, action) {
+      state.folder.map((list) => {
+        if (list.folder_id === action.payload.folder_id) {
+          list.name = action.payload.name;
+        }
+      });
+    },
   },
 });
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { fileActions, bookmarkActions, folderActions } from "../../store";
@@ -20,12 +20,17 @@ import TagCreate from "../Layout/TagCreate";
 const FileListTable = (props) => {
   const params = useParams();
   const userID = params.userId;
+
+  const newFolderName = useRef();
   const navigate = useNavigate();
   const [showTagCreate, setShowTagCreate] = useState(false);
   const [tagFileId, setTagFileId] = useState(0);
   const [isTagged, setIsTagged] = useState(false);
   const [isSorted, setIsSorted] = useState(true);
   const [dateSorted, setDateSorted] = useState(true);
+
+  const [folderId, setFolderId] = useState(0);
+  const [renameFolder, setRenameFolder] = useState({});
 
   const fileList = useSelector((state) => state.file.file);
   const folderList = useSelector((state) => state.folder.folder);
@@ -119,6 +124,36 @@ const FileListTable = (props) => {
     dispatch(bookmarkActions.deleteBookmark(fileId));
   };
 
+  const folderClickHandler = (folders) => {
+    setFolderId(folders.folder_id);
+    setRenameFolder({
+      folder_id: folders.folder_id,
+      name: folders.name,
+    });
+  };
+
+  const keyPressHandler = (e) => {
+    if (e.key === "Enter") {
+      setFolderId(-1);
+      dispatch(
+        folderActions.renameFolder({
+          folder_id: renameFolder.folder_id,
+          name: newFolderName.current.value,
+        })
+      );
+      axios.put(
+        `/folder_detail/${renameFolder.folder_id}`,
+        {
+          id: userID,
+          new_name: newFolderName.current.value,
+        },
+        {
+          headers: headers,
+        }
+      );
+    }
+  };
+
   return (
     <div>
       {showTagCreate && (
@@ -179,12 +214,16 @@ const FileListTable = (props) => {
               <td className="td-div">
                 <div className="td-div-div">
                   <span>
-                    <div>
+                    <div onClick={() => folderClickHandler(list)}>
                       <FaFolder />
                     </div>
                   </span>
                 </div>
-                <p>{list.name}</p>
+                {folderId !== list.folder_id ? (
+                  <p>{list.name}</p>
+                ) : (
+                  <input onKeyPress={keyPressHandler} ref={newFolderName} />
+                )}
               </td>
               <td className="td-user-date">{list.user}</td>
               <td className="td-user-date">{list.created_at}</td>
