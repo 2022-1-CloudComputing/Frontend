@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../../styles/total.css";
@@ -54,9 +55,12 @@ const LoginPage = () => {
     document.location.href = "/register";
   };
 
+
+
   //<div className="text-3xl font-bold underline h-6">
   return (
     <div>
+
       <div className="login-wrapper">
         <h1 className="font-bold text-gray-800 login-ou-header">
           <Link to="/">OU</Link>
@@ -94,6 +98,8 @@ const LoginPage = () => {
                 value="SignIn"
                 onClick={loginButtonHandler}
               />
+
+      
             </div>
           </div>
         </div>
