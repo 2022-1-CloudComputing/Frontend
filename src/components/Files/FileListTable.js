@@ -11,11 +11,14 @@ import {
   FaSortAmountUpAlt,
   FaSortAmountDown,
   FaDownload,
+  FaShareSquare,
+  FaMinus,
 } from "react-icons/fa";
 import axios from "axios";
 
 import { useParams } from "react-router-dom";
 import TagCreate from "../Layout/TagCreate";
+import FileShare from "../Layout/FileShare";
 
 const FileListTable = (props) => {
   const params = useParams();
@@ -24,6 +27,7 @@ const FileListTable = (props) => {
   const newFolderName = useRef();
   const navigate = useNavigate();
   const [showTagCreate, setShowTagCreate] = useState(false);
+  const [showShare, setShowShare] = useState(false);
   const [tagFileId, setTagFileId] = useState(0);
   const [isTagged, setIsTagged] = useState(false);
   const [isSorted, setIsSorted] = useState(true);
@@ -154,6 +158,10 @@ const FileListTable = (props) => {
     }
   };
 
+  const shareClickHandler = (fileTitle) => {
+    setShowShare(true);
+  };
+
   return (
     <div>
       {showTagCreate && (
@@ -161,6 +169,13 @@ const FileListTable = (props) => {
           isTagged={isTagged}
           tagFileId={tagFileId}
           setShowTagCreate={setShowTagCreate}
+        />
+      )}
+      {showShare && (
+        <FileShare
+          isTagged={isTagged}
+          tagFileId={tagFileId}
+          setShowShare={setShowShare}
         />
       )}
 
@@ -201,6 +216,8 @@ const FileListTable = (props) => {
             <th>파일크기</th>
             <th>삭제</th>
             <th>태그</th>
+            <th>다운로드</th>
+            <th>공유</th>
           </tr>
         </thead>
         <tbody>
@@ -222,12 +239,25 @@ const FileListTable = (props) => {
                 {folderId !== list.folder_id ? (
                   <p>{list.name}</p>
                 ) : (
-                  <input onKeyPress={keyPressHandler} ref={newFolderName} />
+                  <p>
+                    <input
+                      onKeyPress={keyPressHandler}
+                      ref={newFolderName}
+                      defaultValue={list.name}
+                      autoFocus
+                    />
+                  </p>
                 )}
               </td>
               <td className="td-user-date">{list.user}</td>
               <td className="td-user-date">{list.created_at}</td>
-              <td className="td-user-date">-</td>
+              <td className="td-user-date">
+                <div>
+                  <button className="tag-icon">
+                    <FaMinus />
+                  </button>
+                </div>
+              </td>
               <td className="td-user-date">
                 <button
                   onClick={() => deleteClickHandler(list)}
@@ -252,7 +282,14 @@ const FileListTable = (props) => {
                     onClick={() => tagClickHandler(list.file_id)}
                     className="tag-icon"
                   >
-                    -
+                    <FaMinus />
+                  </button>
+                </div>
+              </td>
+              <td className="td-user-date">
+                <div>
+                  <button className="tag-icon">
+                    <FaMinus />
                   </button>
                 </div>
               </td>
@@ -323,6 +360,16 @@ const FileListTable = (props) => {
                     className="tag-icon"
                   >
                     <FaDownload />
+                  </button>
+                </div>
+              </td>
+              <td className="td-user-date">
+                <div>
+                  <button
+                    onClick={() => shareClickHandler(list.title)}
+                    className="tag-icon"
+                  >
+                    <FaShareSquare />
                   </button>
                 </div>
               </td>

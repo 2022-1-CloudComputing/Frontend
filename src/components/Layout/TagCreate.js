@@ -59,9 +59,8 @@ const TagCreate = (props) => {
             </div>
           ) : (
             <div className="tag-delete">
-              <div>
-                <p>태그 삭제</p>
-              </div>
+              <p>태그 삭제</p>
+
               <h1>태그를 삭제하시겠습니까?</h1>
             </div>
           )}

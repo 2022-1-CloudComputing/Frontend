@@ -60,14 +60,14 @@ const FolderCreate = (props) => {
       path: "",
       name: inputText.current.value + "/",
       user_id: userID,
-      parent_id: parentID ? parentID : 1,
+      parent_id: parentID ? parentID : 12,
     };
     const storeFolderBox = {
       user: userID,
       path: "",
       name: inputText.current.value,
       user_id: userID,
-      parent_id: parentID ? parentID : 1,
+      parent_id: parentID ? parentID : 12,
       created_at: dateCheck(),
     };
     axios.post(`/folder_create`, folderBox, {

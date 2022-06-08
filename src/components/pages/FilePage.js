@@ -55,7 +55,6 @@ const FilePage = () => {
     async function getFile() {
       const res = await axios.get(`/user/${userID}`);
 
-      console.log(res);
       const tempFileList = res.data.file_list;
       dispatch(fileActions.resetFile([]));
       dispatch(fileActions.resetTotalFile([]));
@@ -64,7 +63,7 @@ const FilePage = () => {
         const tagRes = await axios.get(
           `/user/${userID}/search/tag/${list.file_id}`
         );
-        if (list.folder_id === 1) {
+        if (list.folder_id === 12) {
           const getFileBox = {
             file_id: list.file_id,
             title: list.title,
@@ -75,6 +74,7 @@ const FilePage = () => {
           };
 
           dispatch(fileActions.addFile(getFileBox));
+          console.log(getFileBox);
         }
 
         dispatch(
@@ -84,13 +84,13 @@ const FilePage = () => {
             user: userID,
             created_at: list.created_at.substr(0, 10),
             file_size: fileSizeCheck(list.file_size),
-            tag: tagRes.data.length ? tagRes.data[0].name : "",
+            tag: tagRes.data.length ? tagRes.data[0].name : " ",
           })
         );
       });
     }
     async function getFolder() {
-      const res = await axios.get(`/folder_elements/1/list?id=${userID}`, {
+      const res = await axios.get(`/folder_elements/12/list?id=${userID}`, {
         headers: headers,
       });
       dispatch(folderActions.resetFolder([]));
